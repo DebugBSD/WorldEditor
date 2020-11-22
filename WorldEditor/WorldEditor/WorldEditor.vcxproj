@@ -174,10 +174,12 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestWxWidgets.h" />
+    <ClInclude Include="WorldCanvas.h" />
     <ClInclude Include="wxSFMLCanvas.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WorldCanvas.cpp" />
     <ClCompile Include="wxSFMLCanvas.cpp" />
   </ItemGroup>
   <ItemGroup>

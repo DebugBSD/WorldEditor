@@ -7,6 +7,8 @@
 #include <wx/wxprec.h>
 #include <wx/utils.h>
 
+#include "WorldCanvas.h"
+
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
@@ -35,7 +37,15 @@ bool MyApp::OnInit()
     frame->Show(true);
     return true;
 }
-MyFrame::MyFrame()
+MyFrame::MyFrame() :
+    wxFrame(NULL, wxID_ANY, "Hello SFML", wxDefaultPosition, wxSize(800, 600))
+{
+    wxPoint p{ 50, 50 };
+    wxSize s{ 700, 500 };
+    new WorldCanvas(this, wxID_ANY,p, s);
+}
+
+/*MyFrame::MyFrame()
     : wxFrame(NULL, wxID_ANY, "Hello World")
 {
     wxMenu* menuFile = new wxMenu;
@@ -67,4 +77,4 @@ void MyFrame::OnAbout(wxCommandEvent& event)
 void MyFrame::OnHello(wxCommandEvent& event)
 {
     wxLogMessage("Hello world from wxWidgets!");
-}
+}*/
