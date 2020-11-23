@@ -5,6 +5,7 @@
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_DIRCTRL_FILEACTIVATED(wxID_ANY, MainFrame::SelectedFile)
 EVT_SIZE(MainFrame::OnSize)
+EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame():
@@ -14,8 +15,19 @@ MainFrame::MainFrame():
 {
 	m_mgr.SetManagedWindow(this);
 
-	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds", wxDefaultPosition, wxSize{ 500, 500 });
+	// set frame icon
+	//SetIcon(wxIcon(sample_xpm));
+	
+	SetMenuBar(CreateMenuBar());
+
+	CreateStatusBar();
+	GetStatusBar()->SetStatusText(_("Ready"));
+
+	// Directory control
+	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds", wxDefaultPosition, wxSize{ 500, 500 }, 128, "Image Files|*.png;*.jpg;*.jpeg");
 	m_mgr.AddPane(m_pDirCtrl);
+
+	// Canvas to render textures
 	m_pWorldCanvas = new WorldCanvas(this, wxID_ANY, wxDefaultPosition, wxSize{ 1024, 720 });
 	m_mgr.AddPane(m_pWorldCanvas, wxAuiPaneInfo().Name("WorldCanvas").
 		CenterPane().PaneBorder(false));
@@ -52,9 +64,58 @@ void MainFrame::OnSize(wxSizeEvent& event)
 	Refresh();
 }
 
+wxMenuBar* MainFrame::CreateMenuBar()
+{
+	// Menus
+	wxMenuBar* mb = new wxMenuBar{};
+
+	wxMenu* fileMenu = new wxMenu();
+	fileMenu->Append(wxID_EXIT);
+	wxMenu* editMenu = new wxMenu();
+	wxMenu* viewMenu = new wxMenu();
+	wxMenu* optionsMenu = new wxMenu();
+	wxMenu* helpMenu = new wxMenu();
+
+	// Toolbars
+	wxAuiToolBar* tb2 = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+		wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORIZONTAL);
+	tb2->SetToolBitmapSize(FromDIP(wxSize(16, 16)));
+	tb2->AddTool(ID_New, "New", wxArtProvider::GetBitmap(wxART_NEW));
+	tb2->AddTool(ID_Open, "Open", wxArtProvider::GetBitmap(wxART_FILE_OPEN));
+	tb2->AddTool(ID_Save, "Save", wxArtProvider::GetBitmap(wxART_FILE_SAVE));
+	tb2->AddTool(ID_SaveAs, "Save As", wxArtProvider::GetBitmap(wxART_FILE_SAVE_AS));
+	tb2->AddSeparator();
+	tb2->AddTool(ID_EditUndo, "Undo", wxArtProvider::GetBitmap(wxART_UNDO));
+	tb2->AddTool(ID_EditRedo, "Redp", wxArtProvider::GetBitmap(wxART_REDO));
+	tb2->AddSeparator();
+	tb2->AddTool(ID_GoBack, "Go Back", wxArtProvider::GetBitmap(wxART_GO_BACK));
+	tb2->AddTool(ID_GoForward, "Go Forward", wxArtProvider::GetBitmap(wxART_GO_FORWARD));
+	tb2->AddSeparator();
+	tb2->AddTool(ID_EditCopy, "Copy", wxArtProvider::GetBitmap(wxART_COPY));
+	tb2->AddTool(ID_EditCut, "Cut", wxArtProvider::GetBitmap(wxART_CUT));
+	tb2->AddTool(ID_EditPaste, "Paste", wxArtProvider::GetBitmap(wxART_PASTE));
+	tb2->Realize();
+	m_mgr.AddPane(tb2, wxAuiPaneInfo().
+		Name("tb2").Caption("File Toolbar").
+		ToolbarPane().Top().Row(1));
+
+	mb->Append(fileMenu, _("&File"));
+	mb->Append(editMenu, _("&Edit"));
+	mb->Append(viewMenu, _("&View"));
+	mb->Append(optionsMenu, _("&Options"));
+	mb->Append(helpMenu, _("&Help"));
+
+	return mb;
+}
+
 void MainFrame::SelectedFile(wxTreeEvent& e)
 {
 	
 	wxString filename = m_pDirCtrl->GetPath(e.GetItem());
 	m_pWorldCanvas->OpenTexture(filename);
+}
+
+void MainFrame::OnExit(wxCommandEvent& evt)
+{
+	Close(true);
 }
