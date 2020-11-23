@@ -1,14 +1,51 @@
 #include "stdafx.h"
 #include "WorldCanvas.h"
 
-WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, wxPoint& Position, wxSize& size, long style):
-	wxSFMLCanvas(pParent, id, Position, size, style)
+WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Position, const wxSize& size, long style):
+	wxSFMLCanvas(pParent, id, Position, size, style),
+	m_pSprite{nullptr},
+	m_pTexture{nullptr}
 {
-	bool res = m_Texture.loadFromFile("C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Assets\\Tilesets\\Ground\\[A]GroundTextures_17\\Volcanic_7_Tile.png");
-	m_Sprite.setTexture(m_Texture);
-	m_Sprite.setPosition(600,600);
 
-	m_Sprite.setOrigin(m_Texture.getSize().x / 2, m_Texture.getSize().y / 2);
+}
+
+bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
+{
+	free(); // Preexisting textures...
+
+	m_pTexture = new sf::Texture();
+	bool res = m_pTexture->loadFromFile(pathToTexture.ToStdString());
+	if (res)
+	{
+		m_pSprite = new sf::Sprite();
+		m_pSprite->setTexture(*m_pTexture);
+		int width, height;
+		GetClientSize(&width, &height);
+		m_pSprite->setPosition(width/2, height/2);
+
+		m_pSprite->setOrigin(m_pTexture->getSize().x / 2, m_pTexture->getSize().y / 2);
+	}
+	else
+	{
+		delete m_pTexture;
+		m_pTexture = nullptr;
+	}
+	return res;
+}
+
+void WorldCanvas::free()
+{
+	if (m_pSprite)
+	{
+		delete m_pSprite;
+		m_pSprite = nullptr;
+	}
+
+	if (m_pTexture)
+	{
+		delete m_pTexture;
+		m_pTexture = nullptr;
+	}
 }
 
 void WorldCanvas::OnUpdate()
@@ -17,7 +54,9 @@ void WorldCanvas::OnUpdate()
 	clear(sf::Color(0, 128, 128));
 
 	// Display the sprite in the view
-	m_Sprite.rotate(0.16);
-	
-	draw(m_Sprite);
+	//m_Sprite.rotate(0.16);
+	if (m_pSprite != nullptr)
+	{
+		draw(*m_pSprite);
+	}
 }

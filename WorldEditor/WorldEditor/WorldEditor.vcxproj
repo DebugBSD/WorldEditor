@@ -114,6 +114,8 @@
     <PostBuildEvent>
       <Command>xcopy "$(wxwin)\lib\vc142_x64_dll\wxbase314ud_vc_x64_custom.dll" "$(OutDir)" /Y /A
 xcopy "$(wxwin)\lib\vc142_x64_dll\wxmsw314ud_core_vc_x64_custom.dll" "$(OutDir)" /Y /A
+xcopy "$(wxwin)\lib\vc142_x64_dll\wxmsw314ud_html_vc_x64_custom.dll" "$(OutDir)" /Y /A
+xcopy "$(wxwin)\lib\vc142_x64_dll\wxmsw314ud_aui_vc_x64_custom.dll" "$(OutDir)" /Y /A
 xcopy "$(SFMLSDK_DEBUG)\bin\openal32.dll" "$(OutDir)" /Y /A
 xcopy "$(SFMLSDK_DEBUG)\bin\sfml-audio-d-2.dll" "$(OutDir)" /Y /A
 xcopy "$(SFMLSDK_DEBUG)\bin\sfml-graphics-d-2.dll" "$(OutDir)" /Y /A
@@ -162,6 +164,8 @@ xcopy "$(SFMLSDK_DEBUG)\bin\sfml-window-d-2.dll" "$(OutDir)" /Y /A</Command>
     <PostBuildEvent>
       <Command>xcopy "$(wxwin)\lib\vc142_x64_dll\wxbase314u_vc_x64_custom.dll" "$(OutDir)" /Y /A
 xcopy "$(wxwin)\lib\vc142_x64_dll\wxmsw314u_core_vc_x64_custom.dll" "$(OutDir)" /Y /A
+xcopy "$(wxwin)\lib\vc142_x64_dll\wxmsw314u_html_vc_x64_custom.dll" "$(OutDir)" /Y /A
+xcopy "$(wxwin)\lib\vc142_x64_dll\wxmsw314u_aui_vc_x64_custom.dll" "$(OutDir)" /Y /A
 xcopy "$(SFMLSDK_RELEASE)\bin\openal32.dll" "$(OutDir)" /Y /A
 xcopy "$(SFMLSDK_RELEASE)\bin\sfml-audio-2.dll" "$(OutDir)" /Y /A
 xcopy "$(SFMLSDK_RELEASE)\bin\sfml-graphics-2.dll" "$(OutDir)" /Y /A
@@ -171,6 +175,7 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MainFrame.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestWxWidgets.h" />
@@ -179,6 +184,7 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="WorldCanvas.cpp" />
     <ClCompile Include="wxSFMLCanvas.cpp" />
   </ItemGroup>
