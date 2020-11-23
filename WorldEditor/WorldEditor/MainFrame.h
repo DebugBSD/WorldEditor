@@ -40,7 +40,7 @@ public:
 
     wxAuiDockArt* GetDockArt();
     void Update();
-
+    void OnSize(wxSizeEvent &event);
 private:
 
     wxAuiManager m_mgr;

@@ -19,6 +19,7 @@ private:
     void OnIdle(wxIdleEvent &evt);
 
     void OnPaint(wxPaintEvent &evt);
+    void OnSize(wxSizeEvent& evt);
 
     void OnEraseBackground(wxEraseEvent &evt);
 };

@@ -4,10 +4,11 @@
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_DIRCTRL_FILEACTIVATED(wxID_ANY, MainFrame::SelectedFile)
+EVT_SIZE(MainFrame::OnSize)
 wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame():
-	wxFrame(NULL, wxID_ANY, "WorldEditor", wxDefaultPosition, wxSize(800, 600)),
+	wxFrame(NULL, wxID_ANY, "WorldEditor", wxDefaultPosition, wxSize(1280, 960)),
 	m_pWorldCanvas{nullptr},
 	m_pDirCtrl{nullptr}
 {
@@ -15,7 +16,7 @@ MainFrame::MainFrame():
 
 	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds", wxDefaultPosition, wxSize{ 500, 500 });
 	m_mgr.AddPane(m_pDirCtrl);
-	m_pWorldCanvas = new WorldCanvas(this, wxID_ANY, wxDefaultPosition, wxSize{ 1024, 768 });
+	m_pWorldCanvas = new WorldCanvas(this, wxID_ANY, wxDefaultPosition, wxSize{ 1024, 720 });
 	m_mgr.AddPane(m_pWorldCanvas, wxAuiPaneInfo().Name("WorldCanvas").
 		CenterPane().PaneBorder(false));
 
@@ -44,6 +45,11 @@ wxAuiDockArt* MainFrame::GetDockArt()
 
 void MainFrame::Update()
 {
+}
+
+void MainFrame::OnSize(wxSizeEvent& event)
+{
+	Refresh();
 }
 
 void MainFrame::SelectedFile(wxTreeEvent& e)

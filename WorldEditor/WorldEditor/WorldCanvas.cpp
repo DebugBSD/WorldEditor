@@ -21,7 +21,7 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 		m_pSprite->setTexture(*m_pTexture);
 		int width, height;
 		GetClientSize(&width, &height);
-		m_pSprite->setPosition(width/2, height/2);
+		m_pSprite->setPosition(m_pTexture->getSize().x/2, m_pTexture->getSize().y/2);
 
 		m_pSprite->setOrigin(m_pTexture->getSize().x / 2, m_pTexture->getSize().y / 2);
 	}
