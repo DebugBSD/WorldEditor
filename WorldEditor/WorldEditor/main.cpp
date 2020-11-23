@@ -41,7 +41,7 @@ MyFrame::MyFrame() :
     wxFrame(NULL, wxID_ANY, "Hello SFML", wxDefaultPosition, wxSize(800, 600))
 {
     wxPoint p{ 50, 50 };
-    wxSize s{ 700, 500 };
+    wxSize s{ 1024, 768 };
     new WorldCanvas(this, wxID_ANY,p, s);
 }
 

@@ -2,7 +2,7 @@
 #include "wxSFMLCanvas.h"
 
 wxBEGIN_EVENT_TABLE(wxSFMLCanvas, wxControl)
-	//EVT_IDLE(wxSFMLCanvas::OnIdle)
+	EVT_IDLE(wxSFMLCanvas::OnIdle)
 	EVT_PAINT(wxSFMLCanvas::OnPaint)
 wxEND_EVENT_TABLE()
 
@@ -23,7 +23,7 @@ void wxSFMLCanvas::OnUpdate()
 void wxSFMLCanvas::OnIdle(wxIdleEvent& evt)
 {
 	// Send a paint message when the control is idle, to ensure maximum framerate.
-	Refresh();
+	Refresh(false);
 }
 
 void wxSFMLCanvas::OnPaint(wxPaintEvent& evt)
