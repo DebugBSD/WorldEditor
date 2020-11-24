@@ -21,25 +21,35 @@ wxBEGIN_EVENT_TABLE(WorldCanvas, wxPanel)
 wxEND_EVENT_TABLE()
 
 WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Position, const wxSize& size, long style) :
-	wxControl(pParent, wxID_ANY),
+	wxPanel(pParent, wxID_ANY),
 	m_Width{-1},
 	m_Height{-1},
-	m_ClearBackground{ true }
+	m_ClearBackground{ true },
+	m_DrawPositionX{0},
+	m_DrawPositionY{0}
 {
 
 }
 
 bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 {
+	m_Image.SetLoadFlags(m_Image.GetLoadFlags() & ~wxImage::Load_Verbose);
 	bool res = m_Image.LoadFile(pathToTexture);
 
 	int neww, newh;
 	GetClientSize(&neww, &newh);
 
 	if (m_Image.GetWidth() > neww || m_Image.GetHeight() > newh)
+	{
 		m_Bitmap = wxBitmap(m_Image.Scale(neww, newh));
+		m_DrawPositionX = m_DrawPositionY = 0;
+	}
 	else
+	{
 		m_Bitmap = wxBitmap(m_Image);
+		m_DrawPositionX = neww / 2 - (m_Image.GetWidth() / 2);
+		m_DrawPositionY = neww / 2 - (m_Image.GetHeight() / 2);
+	}
 
 	m_ClearBackground = true;
 
@@ -81,9 +91,16 @@ void WorldCanvas::OnSize(wxSizeEvent& event)
 		GetClientSize(&neww, &newh);
 
 		if (m_Image.GetWidth() > neww || m_Image.GetHeight() > newh)
+		{
 			m_Bitmap = wxBitmap(m_Image.Scale(neww, newh));
+			m_DrawPositionX = m_DrawPositionY = 0;
+		}
 		else
+		{
 			m_Bitmap = wxBitmap(m_Image);
+			m_DrawPositionX = neww / 2 - (m_Image.GetWidth() / 2);
+			m_DrawPositionY = neww / 2 - (m_Image.GetHeight() / 2);
+		}
 	}
 
 	event.Skip();
@@ -99,6 +116,6 @@ void WorldCanvas::render(wxDC& dc)
 		m_ClearBackground = false;
 	}
 
-	dc.DrawBitmap(m_Bitmap, 0,0, false);
+	dc.DrawBitmap(m_Bitmap, m_DrawPositionX, m_DrawPositionY, false);
 
 }

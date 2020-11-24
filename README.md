@@ -2,7 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Add a panel/window to transform textures.
 - See how to add a zoom in/out of all textures.
 - Add icon to the main frame.
 - Add a Scene Window where to put all layers.
@@ -16,4 +15,4 @@ World Editor for Caronte Engine
 - Add a ruler on the image.
 - Add a grid over the image (and add the possibility to configure as orthogonal, isometric, hexagonal, rectangular...)
 - Add the possibility to make transparent the texture.
-- Make Flip
+- Make Flip (Horizontal and vertical)

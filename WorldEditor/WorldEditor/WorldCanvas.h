@@ -4,9 +4,11 @@
 
 /*
  * - See: https://wiki.wxwidgets.org/An_image_panel 
+ * - See ho to use this instead of the actual wxBitmap and wxImage on wxControl: 
+ *      - https://docs.wxwidgets.org/trunk/classwx_buffered_paint_d_c.html
  */
 class WorldCanvas :
-    public wxControl
+    public wxPanel
 {
 public:
     WorldCanvas(wxWindow *pParent, wxWindowID id, const wxPoint &Position, const wxSize &size, long style = 0);
@@ -19,6 +21,8 @@ private:
     int m_Width;
     int m_Height;
     bool m_ClearBackground;
+    wxCoord m_DrawPositionX;
+    wxCoord m_DrawPositionY;
 private:
 
     void free();
