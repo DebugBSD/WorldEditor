@@ -61,8 +61,10 @@ public:
     wxAuiDockArt* GetDockArt();
     void Update();
     void OnSize(wxSizeEvent &event);
-private:
 
+    WorldCanvas* GetWorldCanvas() { return m_pWorldCanvas; }
+
+private:
     wxMenuBar* CreateMenuBar();
 
     wxAuiManager m_mgr;
@@ -75,4 +77,3 @@ private:
 
     wxDECLARE_EVENT_TABLE();
 };
-

@@ -26,6 +26,7 @@ public:
         const wxSize& size = wxDefaultSize,
         long style = 128);
 private:
+    class MainFrame* m_pMainFrame;
 
     // Size properties
     unsigned int m_Width;

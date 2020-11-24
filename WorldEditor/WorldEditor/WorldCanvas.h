@@ -15,6 +15,8 @@ public:
 
     bool OpenTexture(const wxString &pathToTexture);
 
+    void RotateImage(float degrees);
+
 private:
     wxImage m_Image;
     wxBitmap m_Bitmap;
@@ -25,6 +27,7 @@ private:
     wxCoord m_DrawPositionY;
 private:
 
+    void UpdateBitmap();
     void free();
 
     void OnIdle(wxIdleEvent &event);

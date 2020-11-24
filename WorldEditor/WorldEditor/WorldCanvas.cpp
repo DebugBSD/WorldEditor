@@ -34,8 +34,31 @@ WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Positi
 bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 {
 	m_Image.SetLoadFlags(m_Image.GetLoadFlags() & ~wxImage::Load_Verbose);
-	bool res = m_Image.LoadFile(pathToTexture);
+	bool success = m_Image.LoadFile(pathToTexture);
 
+	if (success)
+	{
+		UpdateBitmap();
+
+		m_ClearBackground = true;
+	}
+	else
+	{
+		// Log the error...
+	}
+	return success;
+}
+
+void WorldCanvas::RotateImage(float degrees)
+{
+	double radians = wxDegToRad(degrees);
+	m_Image = m_Image.Rotate(radians, wxPoint{m_Image.GetWidth() / 2, m_Image.GetHeight() / 2});
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
+void WorldCanvas::UpdateBitmap()
+{
 	int neww, newh;
 	GetClientSize(&neww, &newh);
 
@@ -50,10 +73,6 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 		m_DrawPositionX = neww / 2 - (m_Image.GetWidth() / 2);
 		m_DrawPositionY = neww / 2 - (m_Image.GetHeight() / 2);
 	}
-
-	m_ClearBackground = true;
-
-	return res;
 }
 
 void WorldCanvas::free()
@@ -87,20 +106,7 @@ void WorldCanvas::OnSize(wxSizeEvent& event)
 
 	if (m_Image.IsOk())
 	{
-		int neww, newh;
-		GetClientSize(&neww, &newh);
-
-		if (m_Image.GetWidth() > neww || m_Image.GetHeight() > newh)
-		{
-			m_Bitmap = wxBitmap(m_Image.Scale(neww, newh));
-			m_DrawPositionX = m_DrawPositionY = 0;
-		}
-		else
-		{
-			m_Bitmap = wxBitmap(m_Image);
-			m_DrawPositionX = neww / 2 - (m_Image.GetWidth() / 2);
-			m_DrawPositionY = neww / 2 - (m_Image.GetHeight() / 2);
-		}
+		UpdateBitmap();
 	}
 
 	event.Skip();

@@ -1,5 +1,7 @@
 #include "stdafx.h"
+#include <wx/app.h>
 #include "Properties.h"
+#include "MainFrame.h"
 
 wxBEGIN_EVENT_TABLE(Properties, wxWindow)
     EVT_BUTTON(ID_BUTTON_SAVE_COPY_AS,      Properties::OnSaveAs)
@@ -12,7 +14,8 @@ wxEND_EVENT_TABLE()
 
 Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style):
 	wxWindow(parent, id, pos, size, style),
-    m_Flip{false}
+    m_Flip{false},
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
 #pragma region validators
     wxIntegerValidator<unsigned int>
@@ -260,6 +263,8 @@ void Properties::OnRotationChanged(wxCommandEvent& event)
     strRotation.ToDouble(&value);
 
     m_Angle = (float)value;
+
+    m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
 }
 
 void Properties::OnScaleChanged(wxCommandEvent& event)
