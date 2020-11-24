@@ -11,7 +11,8 @@ wxBEGIN_EVENT_TABLE(Properties, wxWindow)
 wxEND_EVENT_TABLE()
 
 Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style):
-	wxWindow(parent, id, pos, size, style)
+	wxWindow(parent, id, pos, size, style),
+    m_Flip{false}
 {
 #pragma region validators
     wxIntegerValidator<unsigned int>
