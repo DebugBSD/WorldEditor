@@ -9,8 +9,9 @@ EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame():
-	wxFrame(NULL, wxID_ANY, "WorldEditor", wxDefaultPosition, wxSize(1280, 960)),
+	wxFrame(NULL, wxID_ANY, "WorldEditor", wxPoint{0,0}, wxSize(1600, 960)),
 	m_pWorldCanvas{nullptr},
+	m_pProperties{nullptr},
 	m_pDirCtrl{nullptr}
 {
 	m_mgr.SetManagedWindow(this);
@@ -31,6 +32,11 @@ MainFrame::MainFrame():
 	m_pWorldCanvas = new WorldCanvas(this, wxID_ANY, wxDefaultPosition, wxSize{ 1024, 720 });
 	m_mgr.AddPane(m_pWorldCanvas, wxAuiPaneInfo().Name("WorldCanvas").
 		CenterPane().PaneBorder(false));
+
+	// Properties window
+	m_pProperties = new Properties(this, wxID_ANY, wxDefaultPosition, wxSize{ 500, 500 });
+	m_mgr.AddPane(m_pProperties, wxAuiPaneInfo().Name("Properties").Caption("Properties").
+		Right());
 
 
 	m_mgr.Update();
@@ -73,6 +79,7 @@ wxMenuBar* MainFrame::CreateMenuBar()
 	fileMenu->Append(wxID_EXIT);
 	wxMenu* editMenu = new wxMenu();
 	wxMenu* viewMenu = new wxMenu();
+	wxMenu* imageMenu = new wxMenu();
 	wxMenu* optionsMenu = new wxMenu();
 	wxMenu* helpMenu = new wxMenu();
 
@@ -95,13 +102,24 @@ wxMenuBar* MainFrame::CreateMenuBar()
 	tb2->AddTool(ID_EditCut, "Cut", wxArtProvider::GetBitmap(wxART_CUT));
 	tb2->AddTool(ID_EditPaste, "Paste", wxArtProvider::GetBitmap(wxART_PASTE));
 	tb2->Realize();
+
+	wxAuiToolBar* tb3 = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+		wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORIZONTAL);
+	tb3->AddTool(ID_ZoomIn, "Zoom In", wxArtProvider::GetBitmap(wxART_PLUS));
+	tb3->AddTool(ID_ZoomOut, "Zoom Out", wxArtProvider::GetBitmap(wxART_MINUS));
+
 	m_mgr.AddPane(tb2, wxAuiPaneInfo().
 		Name("tb2").Caption("File Toolbar").
+		ToolbarPane().Top().Row(1));
+
+	m_mgr.AddPane(tb3, wxAuiPaneInfo().
+		Name("tb3").Caption("Zoom Toolbar").
 		ToolbarPane().Top().Row(1));
 
 	mb->Append(fileMenu, _("&File"));
 	mb->Append(editMenu, _("&Edit"));
 	mb->Append(viewMenu, _("&View"));
+	mb->Append(imageMenu, _("&Image"));
 	mb->Append(optionsMenu, _("&Options"));
 	mb->Append(helpMenu, _("&Help"));
 
@@ -113,6 +131,7 @@ void MainFrame::SelectedFile(wxTreeEvent& e)
 	
 	wxString filename = m_pDirCtrl->GetPath(e.GetItem());
 	m_pWorldCanvas->OpenTexture(filename);
+	GetStatusBar()->SetStatusText(filename);
 }
 
 void MainFrame::OnExit(wxCommandEvent& evt)

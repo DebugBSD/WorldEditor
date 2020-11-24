@@ -23,6 +23,7 @@
 #include "wx/aui/aui.h"
 
 #include "WorldCanvas.h"
+#include "Properties.h"
 
 class MainFrame :
     public wxFrame
@@ -42,7 +43,9 @@ public:
         ID_EditUndo,
         ID_EditRedo,
         ID_GoBack,
-        ID_GoForward
+        ID_GoForward,
+        ID_ZoomIn,
+        ID_ZoomOut
     };
 
     MainFrame();
@@ -63,7 +66,8 @@ private:
     wxMenuBar* CreateMenuBar();
 
     wxAuiManager m_mgr;
-    WorldCanvas* m_pWorldCanvas;
+    WorldCanvas* m_pWorldCanvas; 
+    Properties* m_pProperties;
     wxGenericDirCtrl* m_pDirCtrl;
 
     void SelectedFile(wxTreeEvent &e);

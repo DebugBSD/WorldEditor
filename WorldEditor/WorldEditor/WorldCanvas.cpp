@@ -21,7 +21,7 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 		m_pSprite->setTexture(*m_pTexture);
 		int width, height;
 		GetClientSize(&width, &height);
-		m_pSprite->setPosition(m_pTexture->getSize().x/2, m_pTexture->getSize().y/2);
+		m_pSprite->setPosition(width / 2, height / 2);
 
 		m_pSprite->setOrigin(m_pTexture->getSize().x / 2, m_pTexture->getSize().y / 2);
 	}
@@ -50,6 +50,20 @@ void WorldCanvas::free()
 
 void WorldCanvas::OnUpdate()
 {
+	static int lastWidth = 0, lastHeight = 0;
+	int width, height;
+	GetClientSize(&width, &height);
+
+	if (((lastWidth != width) || (lastHeight != height)) && m_pSprite != nullptr)
+	{
+		m_pSprite->setPosition(width / 2, height / 2);
+
+		m_pSprite->setOrigin(m_pTexture->getSize().x / 2, m_pTexture->getSize().y / 2);
+
+		lastWidth = width;
+		lastHeight = height;
+	}
+
 	// Clear the view
 	clear(sf::Color(0, 128, 128));
 
