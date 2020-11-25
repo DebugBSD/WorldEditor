@@ -1,5 +1,6 @@
 #pragma once
 #include <wx/window.h>
+#include <wx/string.h>
 #include <wx/sizer.h>
 #include <wx/button.h>
 #include <wx/textctrl.h>
@@ -25,8 +26,13 @@ public:
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
         long style = 128);
+
+    void SetFileName(const wxString& fileName) { m_FileName = fileName; m_FileNameUpdated = true; }
 private:
+    wxString m_FileName;
     class MainFrame* m_pMainFrame;
+
+    bool m_FileNameUpdated;
 
     // Size properties
     unsigned int m_Width;
@@ -57,6 +63,10 @@ private:
     wxTextCtrl* m_pCropYTextCtrl;
     wxTextCtrl* m_pCropWidthTextCtrl;
     wxTextCtrl* m_pCropHeightTextCtrl;
+
+private:
+    void CreateThumbnail();
+
 
     void OnSaveAs(wxCommandEvent& event);
     void OnSizeChanged(wxCommandEvent& event);

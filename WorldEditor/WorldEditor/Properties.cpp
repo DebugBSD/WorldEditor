@@ -15,7 +15,8 @@ wxEND_EVENT_TABLE()
 Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style):
 	wxWindow(parent, id, pos, size, style),
     m_Flip{false},
-    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) },
+    m_FileNameUpdated{false}
 {
 #pragma region validators
     wxIntegerValidator<unsigned int>
@@ -243,6 +244,50 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	SetSizerAndFit(boxSizer);
 }
 
+void Properties::CreateThumbnail()
+{
+    Image
+        * image,
+        * images,
+        * resize_image,
+        * thumbnails;
+
+    ImageInfo
+        * image_info;
+
+    ExceptionInfo* exception = m_pMainFrame->GetExceptionInfoPtr();
+
+    image_info = CloneImageInfo((ImageInfo*)NULL);
+    (void)strcpy(image_info->filename, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Game\\Debug\\Resources\\Levels\\Textures\\Dirt_8_Tile.png");
+    images = ReadImage(image_info, exception);
+    if (exception->severity != UndefinedException)
+        CatchException(exception);
+    if (images == (Image*)NULL)
+        exit(1);
+    /*
+      Convert the image to a thumbnail.
+    */
+    thumbnails = NewImageList();
+    while ((image = RemoveFirstImageFromList(&images)) != (Image*)NULL)
+    {
+        resize_image = ResizeImage(image, 106, 80, LanczosFilter, exception);
+        if (resize_image == (Image*)NULL)
+            MagickError(exception->severity, exception->reason, exception->description);
+        (void)AppendImageToList(&thumbnails, resize_image);
+        DestroyImage(image);
+    }
+    /*
+      Write the image thumbnail.
+    */
+    (void)strcpy(thumbnails->filename, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Game\\Debug\\Resources\\Levels\\Textures\\Dirt.png");
+    WriteImage(image_info, thumbnails, exception);
+    /*
+      Destroy the image thumbnail and exit.
+    */
+    thumbnails = DestroyImageList(thumbnails);
+    image_info = DestroyImageInfo(image_info);
+}
+
 void Properties::OnSaveAs(wxCommandEvent& event)
 {
     int stop = 1;
@@ -254,6 +299,46 @@ void Properties::OnSizeChanged(wxCommandEvent& event)
     wxString strHeight = m_pSizeHeightTextCtrl->GetValue();
     m_Width = wxAtoi(strWidth);
     m_Height = wxAtoi(strHeight);
+
+    Image *image,*resize_image;
+
+    ImageInfo *image_info;
+
+    ExceptionInfo* exception = m_pMainFrame->GetExceptionInfoPtr();
+
+    image_info = CloneImageInfo((ImageInfo*)NULL);
+    (void)strcpy(image_info->filename, m_FileName.c_str());
+    image = ReadImage(image_info, exception);
+    if (exception->severity != UndefinedException)
+        CatchException(exception);
+    if (image == (Image*)NULL)
+    {
+        // Log error...
+        image_info = DestroyImageInfo(image_info);
+        //exit(1);
+        return;
+    }
+
+    /*
+      Convert the image to a thumbnail.
+    */
+    resize_image = ResizeImage(image, m_Width, m_Height, LanczosFilter, exception);
+    if (resize_image == (Image*)NULL)
+    {
+        // Log error...
+        image_info = DestroyImageInfo(image_info);
+        MagickError(exception->severity, exception->reason, exception->description);
+    }
+    DestroyImage(image);
+    /*
+      Write the image thumbnail.
+    */
+    (void)strcpy(resize_image->filename, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Assets\\Tilesets\\Ground\\resized.png");
+    WriteImage(image_info, resize_image, exception);
+    /*
+      Destroy the image thumbnail and exit.
+    */
+    image_info = DestroyImageInfo(image_info);
 }
 
 void Properties::OnRotationChanged(wxCommandEvent& event)
@@ -264,7 +349,8 @@ void Properties::OnRotationChanged(wxCommandEvent& event)
 
     m_Angle = (float)value;
 
-    m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
+    //m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
+    CreateThumbnail();
 }
 
 void Properties::OnScaleChanged(wxCommandEvent& event)

@@ -12,8 +12,12 @@ MainFrame::MainFrame():
 	wxFrame(NULL, wxID_ANY, "WorldEditor", wxPoint{0,0}, wxSize(1600, 960)),
 	m_pWorldCanvas{nullptr},
 	m_pProperties{nullptr},
-	m_pDirCtrl{nullptr}
+	m_pDirCtrl{nullptr},
+	m_pExceptionInfo{nullptr}
 {
+
+	m_pExceptionInfo = AcquireExceptionInfo();
+
 	m_mgr.SetManagedWindow(this);
 
 	// set frame icon
@@ -49,6 +53,8 @@ MainFrame::MainFrame(wxWindow* parent, wxWindowID id, const wxString& title, con
 
 MainFrame::~MainFrame()
 {
+	m_pExceptionInfo = DestroyExceptionInfo(m_pExceptionInfo);
+
 	if (m_pWorldCanvas)
 	{
 		delete m_pWorldCanvas;
@@ -131,6 +137,7 @@ void MainFrame::SelectedFile(wxTreeEvent& e)
 	
 	wxString filename = m_pDirCtrl->GetPath(e.GetItem());
 	m_pWorldCanvas->OpenTexture(filename);
+	m_pProperties->SetFileName(filename);
 	GetStatusBar()->SetStatusText(filename);
 }
 

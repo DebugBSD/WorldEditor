@@ -22,6 +22,8 @@
 
 #include "wx/aui/aui.h"
 
+#include <MagickCore/MagickCore.h>
+
 #include "WorldCanvas.h"
 #include "Properties.h"
 
@@ -64,7 +66,11 @@ public:
 
     WorldCanvas* GetWorldCanvas() { return m_pWorldCanvas; }
 
+    ExceptionInfo* GetExceptionInfoPtr() { return m_pExceptionInfo; }
+
 private:
+    ExceptionInfo* m_pExceptionInfo;
+
     wxMenuBar* CreateMenuBar();
 
     wxAuiManager m_mgr;
