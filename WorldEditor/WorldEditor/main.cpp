@@ -22,6 +22,7 @@ bool MyApp::OnInit()
 {
     wxInitAllImageHandlers();
 
+    MagickWandGenesis();
     char** pArgv = (char **)wxApp::argv;
     MagickCoreGenesis(pArgv[0], MagickTrue);
 
@@ -34,6 +35,9 @@ int MyApp::OnExit()
 {
 
     MagickCoreTerminus();
+
+    MagickWandTerminus();
+
     return true;
 }
 

@@ -23,9 +23,24 @@
 #include "wx/aui/aui.h"
 
 #include <MagickCore/MagickCore.h>
+#include <MagickWand/MagickWand.h>
 
 #include "WorldCanvas.h"
 #include "Properties.h"
+
+#define ThrowWandException(wand)                                            \
+    {                                                                       \
+    char                                                                    \
+    * description;                                                          \
+                                                                            \
+    ExceptionType                                                           \
+    severity;                                                               \
+                                                                            \
+    description = MagickGetException(wand, &severity);                      \
+    (void)fprintf(stderr, "%s %s %lu %s\n", GetMagickModule(), description); \
+    description = (char*)MagickRelinquishMemory(description);               \
+    }                                                                       \
+
 
 class MainFrame :
     public wxFrame

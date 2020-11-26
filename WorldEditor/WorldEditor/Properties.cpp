@@ -350,7 +350,51 @@ void Properties::OnRotationChanged(wxCommandEvent& event)
     m_Angle = (float)value;
 
     //m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
-    CreateThumbnail();
+    //CreateThumbnail();
+
+    // Image Magick rotation
+    
+    MagickWand
+        * magick_wand;  /* the appended output image */
+
+    PixelWand
+        * color;
+
+    MagickBooleanType
+        status;
+
+    /* read in the red image */
+    magick_wand = NewMagickWand();
+    //MagickSetSize(red, 100, 100);
+    status = MagickReadImage(magick_wand, m_FileName.c_str());
+    if (status == MagickFalse)
+        ThrowWandException(magick_wand);
+
+    /* rotate the rose image - one image only */
+    color = NewPixelWand();
+    PixelSetColor(color, "transparent");
+    status = MagickRotateImage(magick_wand, color, m_Angle);
+    if (status == MagickFalse)
+        ThrowWandException(magick_wand);
+    color = DestroyPixelWand(color);
+
+    /* NOTE ABOUT MagickAppendImages()
+     *
+     * It is important to either 'set first' or 'reset' the iterator before
+     * appending images, as only images from current image onward are
+     * appended together.
+     *
+     * Also note how a new wand is created by this operation, and that new
+     * wand does not inherit any settings from the previous wand (at least not
+     * at this time).
+     */
+
+     /* Final output */
+    status = MagickWriteImage(magick_wand, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Assets\\Tilesets\\Ground\\rotated.png");
+    if (status == MagickFalse)
+        ThrowWandException(magick_wand);
+
+    magick_wand = DestroyMagickWand(magick_wand);
 }
 
 void Properties::OnScaleChanged(wxCommandEvent& event)
