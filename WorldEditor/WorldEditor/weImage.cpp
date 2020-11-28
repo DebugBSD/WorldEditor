@@ -7,6 +7,7 @@ weImage::weImage():
 	m_pMagickWand{NULL},
 	m_ImageModified{false},
 	m_pPixels{NULL},
+    m_pAlphaPixels{NULL},
     m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
 
@@ -40,11 +41,7 @@ bool weImage::init(const std::string& filename)
 
 void weImage::free()
 {
-    if (m_pPixels != NULL)
-    {
-        std::free(m_pPixels);
-        m_pPixels = NULL;
-    }
+
 }
 
 void weImage::read()
@@ -90,9 +87,6 @@ void weImage::readPixelsFromImage()
     MagickBooleanType
         status;
 
-    // Delete preexisting pixel buffer.
-    free();
-
     /* read in the red image */
     status = MagickReadImage(m_pMagickWand, m_Filename.c_str());
     if (status == MagickFalse)
@@ -100,15 +94,24 @@ void weImage::readPixelsFromImage()
 
     wxSize size = getSize();
 
-    uint8_t* pPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y * (size_t)4);
+    std::free(m_pPixels);
+    std::free(m_pAlphaPixels);
+
+    m_pPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y * (size_t)3);
+    m_pAlphaPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y);
 
     Quantum* pData = GetAuthenticPixels(GetImageFromMagickWand(m_pMagickWand), 0, 0, size.x, size.y, m_pMainFrame->GetExceptionInfoPtr());
 
-    if (pPixels != NULL && pData != NULL)
+    if (pData != NULL)
     {
-        for (int i = 0; i < size.x * size.y * 4; i++)
+        int pixelsIndex = 0;
+        int alphaIndex = 0;
+        for (int i = 0; i < size.x * size.y * 4; i+=4)
         {
-            pPixels[i] = (uint8_t)pData[i];
+            m_pPixels[pixelsIndex++] = (uint8_t)pData[i];
+            m_pPixels[pixelsIndex++] = (uint8_t)pData[i+1];
+            m_pPixels[pixelsIndex++] = (uint8_t)pData[i+2];
+            m_pAlphaPixels[alphaIndex++] = (uint8_t)pData[i+3];
         }
     }
 }

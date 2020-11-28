@@ -17,8 +17,12 @@ public:
 
     void RotateImage(float degrees);
 
+    bool init();
+    void free();
+
 private:
-    wxImage m_Image;
+    class weImage* m_pWEImage;
+    wxImage *m_pImage;
     wxBitmap m_Bitmap;
     int m_Width;
     int m_Height;
@@ -28,7 +32,6 @@ private:
 private:
 
     void UpdateBitmap();
-    void free();
 
     void OnIdle(wxIdleEvent &event);
     void paintEvent(wxPaintEvent &event);

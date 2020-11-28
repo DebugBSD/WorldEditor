@@ -20,6 +20,7 @@ public:
 	void save();
 
 	uint8_t* getPixels() { return m_pPixels; }
+	uint8_t* getAlphaPixels() { return m_pAlphaPixels; }
 	wxSize getSize();
 
 	void scale(double x, double y);
@@ -35,6 +36,7 @@ private:
 	class MainFrame* m_pMainFrame;
 
 	uint8_t* m_pPixels;
+	uint8_t* m_pAlphaPixels; // wxWidgets (wxImage/wxBitmap) uses pixels and alpha channel in different buffers.
 
 	std::string m_Filename;
 
@@ -42,6 +44,5 @@ private:
 
 	// ImageMagick context
 	MagickWand* m_pMagickWand;
-
 };
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "WorldCanvas.h"
+#include "weImage.h"
 
 wxBEGIN_EVENT_TABLE(WorldCanvas, wxPanel)
 // some useful events
@@ -26,16 +27,21 @@ WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Positi
 	m_Height{-1},
 	m_ClearBackground{ true },
 	m_DrawPositionX{0},
-	m_DrawPositionY{0}
+	m_DrawPositionY{0},
+	m_pImage{NULL},
+	m_pWEImage{NULL}
 {
 
 }
 
 bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 {
-	m_Image.SetLoadFlags(m_Image.GetLoadFlags() & ~wxImage::Load_Verbose);
-	bool success = m_Image.LoadFile(pathToTexture);
+	free();
 
+	bool success = true;
+	m_pWEImage = new weImage();
+	m_pWEImage->init(pathToTexture.ToStdString());
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
 	if (success)
 	{
 		UpdateBitmap();
@@ -52,7 +58,7 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 void WorldCanvas::RotateImage(float degrees)
 {
 	double radians = wxDegToRad(degrees);
-	m_Image = m_Image.Rotate(radians, wxPoint{m_Image.GetWidth() / 2, m_Image.GetHeight() / 2});
+	//m_Image = m_Image.Rotate(radians, wxPoint{m_Image.GetWidth() / 2, m_Image.GetHeight() / 2});
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -62,22 +68,39 @@ void WorldCanvas::UpdateBitmap()
 	int neww, newh;
 	GetClientSize(&neww, &newh);
 
-	if (m_Image.GetWidth() > neww || m_Image.GetHeight() > newh)
+	if (m_pImage->GetWidth() > neww || m_pImage->GetHeight() > newh)
 	{
-		m_Bitmap = wxBitmap(m_Image.Scale(neww, newh));
+		m_Bitmap = wxBitmap(m_pImage->Scale(neww, newh));
 		m_DrawPositionX = m_DrawPositionY = 0;
 	}
 	else
 	{
-		m_Bitmap = wxBitmap(m_Image);
-		m_DrawPositionX = neww / 2 - (m_Image.GetWidth() / 2);
-		m_DrawPositionY = neww / 2 - (m_Image.GetHeight() / 2);
+		m_Bitmap = wxBitmap(*m_pImage);
+		m_DrawPositionX = neww / 2 - (m_pImage->GetWidth() / 2);
+		m_DrawPositionY = neww / 2 - (m_pImage->GetHeight() / 2);
 	}
+}
+
+bool WorldCanvas::init()
+{
+	return false;
 }
 
 void WorldCanvas::free()
 {
-	
+
+	if (m_pImage != NULL)
+	{
+		delete m_pImage;
+		m_pImage = NULL;
+	}
+
+	if (m_pWEImage != NULL)
+	{
+		delete m_pWEImage;
+		m_pWEImage = NULL;
+	}
+		
 }
 
 void WorldCanvas::OnIdle(wxIdleEvent& event)
@@ -104,7 +127,7 @@ void WorldCanvas::OnSize(wxSizeEvent& event)
 {
 	Refresh();
 
-	if (m_Image.IsOk())
+	if (m_pImage && m_pImage->IsOk())
 	{
 		UpdateBitmap();
 	}
@@ -114,7 +137,7 @@ void WorldCanvas::OnSize(wxSizeEvent& event)
 
 void WorldCanvas::render(wxDC& dc)
 {
-	if (!m_Image.IsOk()) return;
+	if (!m_pImage || !m_pImage->IsOk()) return;
 
 	if (m_ClearBackground)
 	{
@@ -122,6 +145,6 @@ void WorldCanvas::render(wxDC& dc)
 		m_ClearBackground = false;
 	}
 
-	dc.DrawBitmap(m_Bitmap, m_DrawPositionX, m_DrawPositionY, false);
+	dc.DrawBitmap(m_Bitmap, m_DrawPositionX, m_DrawPositionY, true);
 
 }
