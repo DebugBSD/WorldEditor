@@ -168,11 +168,11 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 #pragma endregion
 
 #pragma region // Crop Image
-    wxBoxSizer* cropImageSizeSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxFlexGridSizer* cropImageSizeSizer = new wxFlexGridSizer(2,4,2,2);
     cropImageSizeSizer->Add(
         new wxStaticText(this, -1, "X:"),
         0,
-        wxALL | wxALIGN_CENTER,
+        wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
         2
     );
 
@@ -181,13 +181,13 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
         m_pCropXTextCtrl,
         0,                          // make vertically stretchable
                           // make horizontally stretchable
-        wxALL,                      //   and make border all around
+        wxALL ,                      //   and make border all around
         2);                         // set border width to 1
 
     cropImageSizeSizer->Add(
         new wxStaticText(this, -1, "Y:"),
         0,
-        wxALL | wxALIGN_CENTER,
+        wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
         2
     );
 
@@ -199,39 +199,36 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
         wxALL,                      //   and make border all around
         2);                         // set border width to 1
 
-    boxSizer->Add(cropImageSizeSizer, 0, wxALL | wxALIGN_CENTER);
-
-    wxBoxSizer* cropImageDimSizer = new wxBoxSizer(wxHORIZONTAL);
-    cropImageDimSizer->Add(
+    cropImageSizeSizer->Add(
         new wxStaticText(this, -1, "Width:"),
         0,
-        wxALL | wxALIGN_CENTER,
+        wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
         2
     );
 
     m_pCropWidthTextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 100, -1 }, 0, cropWidthval);
-    cropImageDimSizer->Add(
+    cropImageSizeSizer->Add(
         m_pCropWidthTextCtrl,
         0,                          // make vertically stretchable
                           // make horizontally stretchable
         wxALL,                      //   and make border all around
         2);                         // set border width to 1
 
-    cropImageDimSizer->Add(
+    cropImageSizeSizer->Add(
         new wxStaticText(this, -1, "Height:"),
         0,
-        wxALL | wxALIGN_CENTER,
+        wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL,
         2
     );
     m_pCropHeightTextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 100, -1 }, 0, cropHeightval);
-    cropImageDimSizer->Add(
+    cropImageSizeSizer->Add(
         m_pCropHeightTextCtrl,
         0,                          // make vertically stretchable
                           // make horizontally stretchable
         wxALL,                      //   and make border all around
         2);                         // set border width to 1
 
-    boxSizer->Add(cropImageDimSizer, 0, wxALL | wxALIGN_CENTER);
+    boxSizer->Add(cropImageSizeSizer, 0, wxALL | wxALIGN_CENTER);
 
     boxSizer->Add(
         new wxButton(this, ID_BUTTON_CROP, "Crop"),
@@ -407,6 +404,7 @@ void Properties::OnScaleChanged(wxCommandEvent& event)
 
     strY.ToDouble(&value);
     m_ScaleHeight = (float)value;
+
 }
 
 void Properties::OnCropChanged(wxCommandEvent& event)
