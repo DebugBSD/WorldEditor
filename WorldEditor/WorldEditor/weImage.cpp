@@ -100,18 +100,34 @@ void weImage::readPixelsFromImage()
     m_pPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y * (size_t)3);
     m_pAlphaPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y);
 
-    Quantum* pData = GetAuthenticPixels(GetImageFromMagickWand(m_pMagickWand), 0, 0, size.x, size.y, m_pMainFrame->GetExceptionInfoPtr());
+    char* pixels = (char *)malloc((size_t)size.x * (size_t)size.y * (size_t)4);
 
-    if (pData != NULL)
+    //Quantum* pData = GetAuthenticPixels(GetImageFromMagickWand(m_pMagickWand), 0, 0, size.x, size.y, m_pMainFrame->GetExceptionInfoPtr());
+    MagickExportImagePixels(m_pMagickWand, 0,0, size.x, size.y, "RGBA", CharPixel, pixels);
+    
+    ExceptionType exception;
+    char* pException = MagickGetException(m_pMagickWand, &exception);
+    if (pException != NULL)
+    {
+        int stop = 1;
+    }
+
+    ExceptionType excType = MagickGetExceptionType(m_pMagickWand);
+    if (excType != UndefinedException)
+    {
+        int stop = 1;
+    }
+
+    if (pixels != NULL)
     {
         int pixelsIndex = 0;
         int alphaIndex = 0;
         for (int i = 0; i < size.x * size.y * 4; i+=4)
         {
-            m_pPixels[pixelsIndex++] = (uint8_t)pData[i];
-            m_pPixels[pixelsIndex++] = (uint8_t)pData[i+1];
-            m_pPixels[pixelsIndex++] = (uint8_t)pData[i+2];
-            m_pAlphaPixels[alphaIndex++] = (uint8_t)pData[i+3];
+            m_pPixels[pixelsIndex++] = (uint8_t)pixels[i];
+            m_pPixels[pixelsIndex++] = (uint8_t)pixels[i+1];
+            m_pPixels[pixelsIndex++] = (uint8_t)pixels[i+2];
+            m_pAlphaPixels[alphaIndex++] = (uint8_t)pixels[i+3];
         }
     }
 }
