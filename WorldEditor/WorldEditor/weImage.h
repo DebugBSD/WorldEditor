@@ -23,6 +23,8 @@ public:
 	uint8_t* getAlphaPixels() { return m_pAlphaPixels; }
 	wxSize getSize();
 
+	void update();
+	void resize(size_t width, size_t height);
 	void scale(double x, double y);
 	void crop(double x, double y, double width, double height);
 	void rotate(double degrees);

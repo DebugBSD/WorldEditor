@@ -2,6 +2,8 @@
 #include "WorldCanvas.h"
 #include "weImage.h"
 
+#include <vector>
+
 wxBEGIN_EVENT_TABLE(WorldCanvas, wxPanel)
 // some useful events
 /*
@@ -45,7 +47,6 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 	if (success)
 	{
 		UpdateBitmap();
-
 		m_ClearBackground = true;
 	}
 	else
@@ -55,10 +56,47 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 	return success;
 }
 
+void WorldCanvas::ScaleImage(double x, double y)
+{
+	//static std::vector<wxSize> sizes;
+	delete m_pImage;
+	m_pWEImage->scale(x,y);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
 void WorldCanvas::RotateImage(float degrees)
 {
-	double radians = wxDegToRad(degrees);
-	//m_Image = m_Image.Rotate(radians, wxPoint{m_Image.GetWidth() / 2, m_Image.GetHeight() / 2});
+	//static std::vector<wxSize> sizes;
+	delete m_pImage;
+	m_pWEImage->rotate(degrees);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
+void WorldCanvas::ResizeImage(size_t width, size_t height)
+{
+	//static std::vector<wxSize> sizes;
+	delete m_pImage;
+	m_pWEImage->resize(width, height);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -100,7 +138,7 @@ void WorldCanvas::free()
 		delete m_pWEImage;
 		m_pWEImage = NULL;
 	}
-		
+
 }
 
 void WorldCanvas::OnIdle(wxIdleEvent& event)

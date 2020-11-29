@@ -297,6 +297,9 @@ void Properties::OnSizeChanged(wxCommandEvent& event)
     m_Width = wxAtoi(strWidth);
     m_Height = wxAtoi(strHeight);
 
+    m_pMainFrame->GetWorldCanvas()->ResizeImage(m_Width, m_Height);
+
+#if 0
     Image *image,*resize_image;
 
     ImageInfo *image_info;
@@ -336,6 +339,7 @@ void Properties::OnSizeChanged(wxCommandEvent& event)
       Destroy the image thumbnail and exit.
     */
     image_info = DestroyImageInfo(image_info);
+#endif
 }
 
 void Properties::OnRotationChanged(wxCommandEvent& event)
@@ -346,7 +350,8 @@ void Properties::OnRotationChanged(wxCommandEvent& event)
 
     m_Angle = (float)value;
 
-    //m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
+    m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
+#if 0
     //CreateThumbnail();
 
     // Image Magick rotation
@@ -392,6 +397,7 @@ void Properties::OnRotationChanged(wxCommandEvent& event)
         ThrowWandException(magick_wand);
 
     magick_wand = DestroyMagickWand(magick_wand);
+#endif
 }
 
 void Properties::OnScaleChanged(wxCommandEvent& event)
@@ -405,6 +411,7 @@ void Properties::OnScaleChanged(wxCommandEvent& event)
     strY.ToDouble(&value);
     m_ScaleHeight = (float)value;
 
+    m_pMainFrame->GetWorldCanvas()->ScaleImage(m_ScaleWidth, m_ScaleHeight);
 }
 
 void Properties::OnCropChanged(wxCommandEvent& event)

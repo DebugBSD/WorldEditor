@@ -26,6 +26,9 @@ weImage::~weImage()
 
 bool weImage::init(const std::string& filename)
 {
+    MagickBooleanType
+        status;
+
     if (m_pMagickWand != NULL)
     {
         m_pMagickWand = DestroyMagickWand(m_pMagickWand);
@@ -35,13 +38,22 @@ bool weImage::init(const std::string& filename)
     m_pMagickWand = NewMagickWand();
 
     m_Filename = filename;
+
+    /* read in the red image */
+    status = MagickReadImage(m_pMagickWand, m_Filename.c_str());
+    if (status == MagickFalse)
+    {
+        // TODO: Handle errors
+        ThrowWandException(m_pMagickWand);
+    }
+
     readPixelsFromImage();
+
 	return true;
 }
 
 void weImage::free()
 {
-
 }
 
 void weImage::read()
@@ -67,8 +79,29 @@ wxSize weImage::getSize()
     return size;
 }
 
+void weImage::update()
+{
+    readPixelsFromImage();
+}
+
+void weImage::resize(size_t width, size_t height)
+{
+    /* 
+     * Possible algorithms to use:
+     * - MagickAdaptativeResizeImage
+     * - MagickInterpolativeResizeImage
+     * - MagickResizeImage
+     *      - Filters: 
+     *          Bessel, Blackman, Box, Catrom, CubicGaussian, Hanning, Hermite, 
+     *          Lanczos, Mitchell, PointQuandratic, Sinc, Triangle.
+     */
+    MagickBooleanType resized = MagickResizeImage(m_pMagickWand, width, height, BoxFilter);
+    // There is no description about the return value.
+}
+
 void weImage::scale(double x, double y)
 {
+    MagickBooleanType scaled = MagickScaleImage(m_pMagickWand, getSize().x * x, getSize().y * y);
 }
 
 void weImage::crop(double x, double y, double width, double height)
@@ -77,57 +110,71 @@ void weImage::crop(double x, double y, double width, double height)
 
 void weImage::rotate(double degrees)
 {
+    PixelWand *color;
+
+    MagickBooleanType status;
+
+    color = NewPixelWand();
+    PixelSetColor(color, "transparent");
+    status = MagickRotateImage(m_pMagickWand, color, degrees);
+    if (status == MagickFalse)
+    {
+        // TODO: Handle errors
+        ThrowWandException(m_pMagickWand);
+    }
+    color = DestroyPixelWand(color);
 }
 
 void weImage::readPixelsFromImage()
 {
-    PixelWand
-        * color;
+    PixelWand *color;
 
-    MagickBooleanType
-        status;
-
-    /* read in the red image */
-    status = MagickReadImage(m_pMagickWand, m_Filename.c_str());
-    if (status == MagickFalse)
-        ThrowWandException(m_pMagickWand);
+    MagickBooleanType status;
 
     wxSize size = getSize();
-
-    std::free(m_pPixels);
-    std::free(m_pAlphaPixels);
 
     m_pPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y * (size_t)3);
     m_pAlphaPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y);
 
     char* pixels = (char *)malloc((size_t)size.x * (size_t)size.y * (size_t)4);
 
-    //Quantum* pData = GetAuthenticPixels(GetImageFromMagickWand(m_pMagickWand), 0, 0, size.x, size.y, m_pMainFrame->GetExceptionInfoPtr());
-    MagickExportImagePixels(m_pMagickWand, 0,0, size.x, size.y, "RGBA", CharPixel, pixels);
-    
-    ExceptionType exception;
-    char* pException = MagickGetException(m_pMagickWand, &exception);
-    if (pException != NULL)
+    MagickBooleanType isOK = MagickExportImagePixels(m_pMagickWand, 0,0, size.x, size.y, "RGBA", CharPixel, pixels);
+    if (isOK == MagickTrue)
     {
-        int stop = 1;
-    }
-
-    ExceptionType excType = MagickGetExceptionType(m_pMagickWand);
-    if (excType != UndefinedException)
-    {
-        int stop = 1;
-    }
-
-    if (pixels != NULL)
-    {
-        int pixelsIndex = 0;
-        int alphaIndex = 0;
-        for (int i = 0; i < size.x * size.y * 4; i+=4)
+        if (pixels != NULL)
         {
-            m_pPixels[pixelsIndex++] = (uint8_t)pixels[i];
-            m_pPixels[pixelsIndex++] = (uint8_t)pixels[i+1];
-            m_pPixels[pixelsIndex++] = (uint8_t)pixels[i+2];
-            m_pAlphaPixels[alphaIndex++] = (uint8_t)pixels[i+3];
+            int pixelsIndex = 0;
+            int alphaIndex = 0;
+            for (int i = 0; i < size.x * size.y * 4; i += 4)
+            {
+                m_pPixels[pixelsIndex++] = (uint8_t)pixels[i];
+                m_pPixels[pixelsIndex++] = (uint8_t)pixels[i + 1];
+                m_pPixels[pixelsIndex++] = (uint8_t)pixels[i + 2];
+                m_pAlphaPixels[alphaIndex++] = (uint8_t)pixels[i + 3];
+            }
+            std::free(pixels);
+        }
+    }
+    else
+    {
+        // Log error...
+
+        // Clean resources
+        if (m_pPixels != NULL)
+        {
+            std::free(m_pPixels);
+            m_pPixels = NULL;
+        }
+
+        if (m_pAlphaPixels != NULL)
+        {
+            std::free(m_pAlphaPixels);
+            m_pAlphaPixels = NULL;
+        }
+
+        if (pixels != NULL)
+        {
+            std::free(pixels);
         }
     }
 }

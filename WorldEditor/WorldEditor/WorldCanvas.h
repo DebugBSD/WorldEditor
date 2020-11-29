@@ -2,11 +2,6 @@
 #include <wx/wx.h>
 #include <wx/sizer.h>
 
-/*
- * - See: https://wiki.wxwidgets.org/An_image_panel 
- * - See ho to use this instead of the actual wxBitmap and wxImage on wxControl: 
- *      - https://docs.wxwidgets.org/trunk/classwx_buffered_paint_d_c.html
- */
 class WorldCanvas :
     public wxPanel
 {
@@ -15,7 +10,9 @@ public:
 
     bool OpenTexture(const wxString &pathToTexture);
 
+    void ScaleImage(double x, double y);
     void RotateImage(float degrees);
+    void ResizeImage(size_t width, size_t height);
 
     bool init();
     void free();
@@ -29,6 +26,7 @@ private:
     bool m_ClearBackground;
     wxCoord m_DrawPositionX;
     wxCoord m_DrawPositionY;
+
 private:
 
     void UpdateBitmap();
