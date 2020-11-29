@@ -56,6 +56,52 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 	return success;
 }
 
+wxSize WorldCanvas::ImageSize()
+{
+	wxSize size{ -1, -1 };
+	if (m_pWEImage != NULL)
+	{
+		size = m_pWEImage->getSize();
+	}
+	return size;
+}
+
+void WorldCanvas::SaveImage()
+{
+	if (m_pWEImage != NULL)
+	{
+		m_pWEImage->save();
+	}
+}
+
+void WorldCanvas::ShaveImage(size_t width, size_t height)
+{
+	delete m_pImage;
+	m_pWEImage->shave(width, height);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
+void WorldCanvas::CropImage(double x, double y, double width, double height)
+{
+	delete m_pImage;
+	m_pWEImage->crop(x,y,width,height);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
 void WorldCanvas::ScaleImage(double x, double y)
 {
 	//static std::vector<wxSize> sizes;
@@ -91,6 +137,20 @@ void WorldCanvas::ResizeImage(size_t width, size_t height)
 	//static std::vector<wxSize> sizes;
 	delete m_pImage;
 	m_pWEImage->resize(width, height);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
+void WorldCanvas::TrimImage(double fuzz)
+{
+	delete m_pImage;
+	m_pWEImage->trim(fuzz);
 	m_pWEImage->update();
 
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.

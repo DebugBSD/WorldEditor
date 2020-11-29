@@ -39,13 +39,16 @@ bool weImage::init(const std::string& filename)
 
     m_Filename = filename;
 
-    /* read in the red image */
+    /* read in the image */
     status = MagickReadImage(m_pMagickWand, m_Filename.c_str());
     if (status == MagickFalse)
     {
         // TODO: Handle errors
         ThrowWandException(m_pMagickWand);
     }
+
+    // Add a window where to show more info about the file
+    //char* pInfo = MagickIdentifyImage(m_pMagickWand);
 
     readPixelsFromImage();
 
@@ -65,7 +68,15 @@ void weImage::save()
 {
 	if (m_ImageModified)
 	{
-		m_ImageModified = true;
+		m_ImageModified = false;
+
+        /* read in the image */
+        MagickBooleanType status = MagickWriteImage(m_pMagickWand, m_Filename.c_str());
+        if (status == MagickFalse)
+        {
+            // TODO: Handle errors
+            ThrowWandException(m_pMagickWand);
+        }
 	}
 }
 
@@ -81,11 +92,15 @@ wxSize weImage::getSize()
 
 void weImage::update()
 {
+    // Add a window where to show more info about the file
+    //char* pInfo = MagickIdentifyImage(m_pMagickWand);
+
     readPixelsFromImage();
 }
 
 void weImage::resize(size_t width, size_t height)
 {
+    m_ImageModified = true;
     /* 
      * Possible algorithms to use:
      * - MagickAdaptativeResizeImage
@@ -101,15 +116,30 @@ void weImage::resize(size_t width, size_t height)
 
 void weImage::scale(double x, double y)
 {
+    m_ImageModified = true;
+
     MagickBooleanType scaled = MagickScaleImage(m_pMagickWand, getSize().x * x, getSize().y * y);
 }
 
 void weImage::crop(double x, double y, double width, double height)
 {
+    m_ImageModified = true;
+
+    //MagickBooleanType crop = MagickCropImage(m_pMagickWand, width, height, x, y);
+    m_pMagickWand = MagickGetImageRegion(m_pMagickWand, width, height, x, y);
+}
+
+void weImage::shave(size_t width, size_t height)
+{
+    m_ImageModified = true;
+
+    MagickShaveImage(m_pMagickWand, width, height);
 }
 
 void weImage::rotate(double degrees)
 {
+    m_ImageModified = true;
+
     PixelWand *color;
 
     MagickBooleanType status;
@@ -123,6 +153,13 @@ void weImage::rotate(double degrees)
         ThrowWandException(m_pMagickWand);
     }
     color = DestroyPixelWand(color);
+}
+
+void weImage::trim(double fuzz)
+{
+    m_ImageModified = true;
+
+    MagickBooleanType trimmed = MagickTrimImage(m_pMagickWand, fuzz);
 }
 
 void weImage::readPixelsFromImage()

@@ -29,7 +29,7 @@ MainFrame::MainFrame():
 	GetStatusBar()->SetStatusText(_("Ready"));
 
 	// Directory control
-	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds", wxDefaultPosition, wxSize{ 500, 500 }, 128, "Image Files|*.png;*.jpg;*.jpeg");
+	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Tiles", wxDefaultPosition, wxSize{ 500, 500 }, 128, "Image Files|*.png;*.jpg;*.jpeg");
 	m_mgr.AddPane(m_pDirCtrl);
 
 	// Canvas to render textures

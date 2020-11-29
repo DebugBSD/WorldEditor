@@ -5,10 +5,11 @@
 
 wxBEGIN_EVENT_TABLE(Properties, wxWindow)
     EVT_BUTTON(ID_BUTTON_SAVE_COPY_AS,      Properties::OnSaveAs)
+    EVT_BUTTON(ID_BUTTON_SAVE_CURRENT,      Properties::OnSaveCurrent)
     EVT_BUTTON(ID_BUTTON_RESIZE_TEXTURE,    Properties::OnSizeChanged)
     EVT_BUTTON(ID_BUTTON_ROTATE,            Properties::OnRotationChanged)
     EVT_BUTTON(ID_BUTTON_SCALE,             Properties::OnScaleChanged)
-    EVT_BUTTON(ID_BUTTON_CROP,              Properties::OnCropChanged)
+    EVT_BUTTON(ID_BUTTON_SHAVE,             Properties::OnShaveChanged)
     EVT_BUTTON(ID_BUTTON_FLIP,              Properties::OnFlipChanged)
 wxEND_EVENT_TABLE()
 
@@ -45,24 +46,40 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 
     wxIntegerValidator<unsigned int>
         cropHeightval(&m_CropHeight, wxNUM_VAL_THOUSANDS_SEPARATOR);
+
+    wxIntegerValidator<unsigned int>
+        shaveWidthval(&m_ShaveWidth, wxNUM_VAL_THOUSANDS_SEPARATOR);
+
+    wxIntegerValidator<unsigned int>
+        shaveHeightval(&m_ShaveHeight, wxNUM_VAL_THOUSANDS_SEPARATOR);
+
 #pragma endregion
 
 	wxBoxSizer* boxSizer = new wxBoxSizer{wxVERTICAL};
 
-    // create text ctrl with minimal size 100x60
+    m_pFilenameTextCtrl = new wxTextCtrl(this, -1, "");
     boxSizer->Add(
-        new wxTextCtrl(this, -1, "FileName"),
+        m_pFilenameTextCtrl,
         0,                          // make vertically stretchable
         wxEXPAND |                  // make horizontally stretchable
         wxALL,                      //   and make border all around
         2);                         // set border width to 1
-    boxSizer->Add(
+
+    wxBoxSizer* buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
+    buttonsSizer->Add(
         new wxButton(this, ID_BUTTON_SAVE_COPY_AS, "Save Copy As"),
         0,                          // make horizontally unstretchable
-        wxALL |                     // make border all around (implicit top alignment)
-        wxALIGN_RIGHT,              //   and align the button to the right
+        wxALL,              //   and align the button to the right
         2);                         // set border width to 1
-    
+
+    buttonsSizer->Add(
+        new wxButton(this, ID_BUTTON_SAVE_CURRENT, "Save Current"),
+        0,                          // make horizontally unstretchable
+        wxALL,              //   and align the button to the right
+        2);                         // set border width to 1
+
+    boxSizer->Add(buttonsSizer, 0, wxALL | wxALIGN_RIGHT);
+
 #pragma region // Size of file
     wxBoxSizer* imageSizeSizer = new wxBoxSizer(wxHORIZONTAL);
     imageSizeSizer->Add(
@@ -238,56 +255,101 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
         2);                         // set border width to 1
 #pragma endregion
 
+#pragma region // Trim Image
+    wxBoxSizer* trimImageSizer = new wxBoxSizer(wxHORIZONTAL);
+    trimImageSizer->Add(
+        new wxStaticText(this, -1, "Fuzz:"),
+        0,
+        wxALL | wxALIGN_CENTER,
+        2
+    );
+
+    m_pFuzzTextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 100, -1 }, 0, rot);
+    trimImageSizer->Add(
+        m_pFuzzTextCtrl,
+        0,                          // make vertically stretchable
+                          // make horizontally stretchable
+        wxALL,                      //   and make border all around
+        2);                         // set border width to 1
+
+    trimImageSizer->Add(
+        new wxButton(this, ID_BUTTON_TRIM, "Trim"),
+        0,                          // make horizontally unstretchable
+        wxALL,              //   and align the button to the right
+        2);                         // set border width to 1
+    boxSizer->Add(trimImageSizer, 0, wxALL | wxALIGN_CENTER);
+#pragma endregion
+
+#pragma region // Shave image
+    wxBoxSizer* shaveImageSizer = new wxBoxSizer(wxHORIZONTAL);
+    shaveImageSizer->Add(
+        new wxStaticText(this, -1, "Width:"),
+        0,
+        wxALL | wxALIGN_CENTER,
+        2
+    );
+    m_pShaveWidthTextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 100, -1 }, 0, shaveWidthval);
+    shaveImageSizer->Add(
+        m_pShaveWidthTextCtrl,
+        0,                          // make vertically stretchable
+                          // make horizontally stretchable
+        wxALL,                      //   and make border all around
+        2);                         // set border width to 1
+
+    shaveImageSizer->Add(
+        new wxStaticText(this, -1, "Height:"),
+        0,
+        wxALL | wxALIGN_CENTER,
+        2
+    );
+    m_pShaveHeightTextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 100, -1 }, 0, shaveHeightval);
+    shaveImageSizer->Add(
+        m_pShaveHeightTextCtrl,
+        0,                          // make vertically stretchable
+                          // make horizontally stretchable
+        wxALL,                      //   and make border all around
+        2);                         // set border width to 1
+
+    shaveImageSizer->Add(
+        new wxButton(this, ID_BUTTON_SHAVE, "Shave"),
+        0,                          // make horizontally unstretchable
+        wxALL,              //   and align the button to the right
+        2);                         // set border width to 1
+    boxSizer->Add(shaveImageSizer, 0, wxALL | wxALIGN_CENTER);
+#pragma endregion
 	SetSizerAndFit(boxSizer);
 }
 
-void Properties::CreateThumbnail()
+void Properties::SetFileName(const wxString& fileName)
 {
-    Image
-        * image,
-        * images,
-        * resize_image,
-        * thumbnails;
-
-    ImageInfo
-        * image_info;
-
-    ExceptionInfo* exception = m_pMainFrame->GetExceptionInfoPtr();
-
-    image_info = CloneImageInfo((ImageInfo*)NULL);
-    (void)strcpy(image_info->filename, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Game\\Debug\\Resources\\Levels\\Textures\\Dirt_8_Tile.png");
-    images = ReadImage(image_info, exception);
-    if (exception->severity != UndefinedException)
-        CatchException(exception);
-    if (images == (Image*)NULL)
-        exit(1);
-    /*
-      Convert the image to a thumbnail.
-    */
-    thumbnails = NewImageList();
-    while ((image = RemoveFirstImageFromList(&images)) != (Image*)NULL)
-    {
-        resize_image = ResizeImage(image, 106, 80, LanczosFilter, exception);
-        if (resize_image == (Image*)NULL)
-            MagickError(exception->severity, exception->reason, exception->description);
-        (void)AppendImageToList(&thumbnails, resize_image);
-        DestroyImage(image);
-    }
-    /*
-      Write the image thumbnail.
-    */
-    (void)strcpy(thumbnails->filename, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Game\\Debug\\Resources\\Levels\\Textures\\Dirt.png");
-    WriteImage(image_info, thumbnails, exception);
-    /*
-      Destroy the image thumbnail and exit.
-    */
-    thumbnails = DestroyImageList(thumbnails);
-    image_info = DestroyImageInfo(image_info);
+    m_FileName = fileName; 
+    m_FileNameUpdated = true;
+    UpdateView();
 }
+
+void Properties::UpdateView()
+{
+    wxSize size = m_pMainFrame->GetWorldCanvas()->ImageSize();
+
+    m_pFilenameTextCtrl->SetValue(m_FileName);
+
+    m_pSizeWidthTextCtrl->SetValue(wxString::FromDouble(size.x));
+    m_pSizeHeightTextCtrl->SetValue(wxString::FromDouble(size.y));
+}
+
 
 void Properties::OnSaveAs(wxCommandEvent& event)
 {
-    int stop = 1;
+    /* 
+     * Verificaciones:
+     * - El nombre del fichero debe ser igual que el de la caja de texto.
+     * - El fichero actual haya sido modificado.
+     */
+}
+
+void Properties::OnSaveCurrent(wxCommandEvent& event)
+{
+    m_pMainFrame->GetWorldCanvas()->SaveImage();
 }
 
 void Properties::OnSizeChanged(wxCommandEvent& event)
@@ -299,47 +361,20 @@ void Properties::OnSizeChanged(wxCommandEvent& event)
 
     m_pMainFrame->GetWorldCanvas()->ResizeImage(m_Width, m_Height);
 
-#if 0
-    Image *image,*resize_image;
+    UpdateView();
+}
 
-    ImageInfo *image_info;
+void Properties::OnShaveChanged(wxCommandEvent& event)
+{
+    wxString strWidth = m_pShaveWidthTextCtrl->GetValue();
+    wxString strHeight = m_pShaveHeightTextCtrl->GetValue();
 
-    ExceptionInfo* exception = m_pMainFrame->GetExceptionInfoPtr();
+    m_ShaveWidth = wxAtoi(strWidth);
+    m_ShaveHeight = wxAtoi(strHeight);
 
-    image_info = CloneImageInfo((ImageInfo*)NULL);
-    (void)strcpy(image_info->filename, m_FileName.c_str());
-    image = ReadImage(image_info, exception);
-    if (exception->severity != UndefinedException)
-        CatchException(exception);
-    if (image == (Image*)NULL)
-    {
-        // Log error...
-        image_info = DestroyImageInfo(image_info);
-        //exit(1);
-        return;
-    }
+    m_pMainFrame->GetWorldCanvas()->ShaveImage(m_ShaveWidth, m_ShaveHeight);
 
-    /*
-      Convert the image to a thumbnail.
-    */
-    resize_image = ResizeImage(image, m_Width, m_Height, LanczosFilter, exception);
-    if (resize_image == (Image*)NULL)
-    {
-        // Log error...
-        image_info = DestroyImageInfo(image_info);
-        MagickError(exception->severity, exception->reason, exception->description);
-    }
-    DestroyImage(image);
-    /*
-      Write the image thumbnail.
-    */
-    (void)strcpy(resize_image->filename, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Assets\\Tilesets\\Ground\\resized.png");
-    WriteImage(image_info, resize_image, exception);
-    /*
-      Destroy the image thumbnail and exit.
-    */
-    image_info = DestroyImageInfo(image_info);
-#endif
+    UpdateView();
 }
 
 void Properties::OnRotationChanged(wxCommandEvent& event)
@@ -351,53 +386,8 @@ void Properties::OnRotationChanged(wxCommandEvent& event)
     m_Angle = (float)value;
 
     m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
-#if 0
-    //CreateThumbnail();
 
-    // Image Magick rotation
-    
-    MagickWand
-        * magick_wand;  /* the appended output image */
-
-    PixelWand
-        * color;
-
-    MagickBooleanType
-        status;
-
-    /* read in the red image */
-    magick_wand = NewMagickWand();
-    //MagickSetSize(red, 100, 100);
-    status = MagickReadImage(magick_wand, m_FileName.c_str());
-    if (status == MagickFalse)
-        ThrowWandException(magick_wand);
-
-    /* rotate the rose image - one image only */
-    color = NewPixelWand();
-    PixelSetColor(color, "transparent");
-    status = MagickRotateImage(magick_wand, color, m_Angle);
-    if (status == MagickFalse)
-        ThrowWandException(magick_wand);
-    color = DestroyPixelWand(color);
-
-    /* NOTE ABOUT MagickAppendImages()
-     *
-     * It is important to either 'set first' or 'reset' the iterator before
-     * appending images, as only images from current image onward are
-     * appended together.
-     *
-     * Also note how a new wand is created by this operation, and that new
-     * wand does not inherit any settings from the previous wand (at least not
-     * at this time).
-     */
-
-     /* Final output */
-    status = MagickWriteImage(magick_wand, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Assets\\Tilesets\\Ground\\rotated.png");
-    if (status == MagickFalse)
-        ThrowWandException(magick_wand);
-
-    magick_wand = DestroyMagickWand(magick_wand);
-#endif
+    UpdateView();
 }
 
 void Properties::OnScaleChanged(wxCommandEvent& event)
@@ -412,6 +402,8 @@ void Properties::OnScaleChanged(wxCommandEvent& event)
     m_ScaleHeight = (float)value;
 
     m_pMainFrame->GetWorldCanvas()->ScaleImage(m_ScaleWidth, m_ScaleHeight);
+
+    UpdateView();
 }
 
 void Properties::OnCropChanged(wxCommandEvent& event)
@@ -425,9 +417,24 @@ void Properties::OnCropChanged(wxCommandEvent& event)
     m_CropY = wxAtoi(strY);
     m_CropWidth = wxAtoi(strWidth);
     m_CropHeight = wxAtoi(strHeight);
+
+    m_pMainFrame->GetWorldCanvas()->CropImage(m_CropX, m_CropY, m_CropWidth, m_CropHeight);
+
+    UpdateView();
 }
 
 void Properties::OnFlipChanged(wxCommandEvent& event)
 {
     int stop = 1;
+}
+
+void Properties::OnTrimChanged(wxCommandEvent& event)
+{
+    wxString strFuzz = m_pFuzzTextCtrl->GetValue();
+    double value;
+    strFuzz.ToDouble(&value);
+
+    m_pMainFrame->GetWorldCanvas()->TrimImage(value);
+
+    UpdateView();
 }

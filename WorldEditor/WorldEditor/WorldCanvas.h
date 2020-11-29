@@ -10,9 +10,14 @@ public:
 
     bool OpenTexture(const wxString &pathToTexture);
 
+    wxSize ImageSize();
+    void SaveImage();
+    void ShaveImage(size_t width, size_t height);
+    void CropImage(double x, double y, double width, double height);
     void ScaleImage(double x, double y);
     void RotateImage(float degrees);
     void ResizeImage(size_t width, size_t height);
+    void TrimImage(double fuzz);
 
     bool init();
     void free();

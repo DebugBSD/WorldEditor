@@ -2,7 +2,7 @@
 World Editor for Caronte Engine
 
 # TODO
-- See how to add a zoom in/out of all textures.
+- See how to add a zoom in/out of all textures (See Scale or Resize).
 - Add icon to the main frame.
 - Add a Scene Window where to put all layers.
 - Add a Log window and handle errors reported by ImageMagick Framework (wxLog).
@@ -21,3 +21,5 @@ World Editor for Caronte Engine
 - Use OpenGL as Graphics API instead of wxImage/wxBitmap.
 - Beware to deal with different kind of images (RGB, RGBA, CYMK, CYMKA, ...)
 - Add a reset button to reset (or reload) the image to the default.
+- Add a button to change the background color to transparent.
+- Add support to copy&paste regions of pixels.

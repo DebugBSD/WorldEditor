@@ -27,7 +27,9 @@ public:
 	void resize(size_t width, size_t height);
 	void scale(double x, double y);
 	void crop(double x, double y, double width, double height);
+	void shave(size_t width, size_t height);
 	void rotate(double degrees);
+	void trim(double fuzz);
 
 private:
 
