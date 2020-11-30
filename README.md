@@ -3,6 +3,7 @@ World Editor for Caronte Engine
 
 # TODO
 - See how to add a zoom in/out of all textures (See Scale or Resize).
+- Create an empty canvas where to draw.
 - Add icon to the main frame.
 - Add a Scene Window where to put all layers.
 - Add a Log window and handle errors reported by ImageMagick Framework (wxLog).
@@ -23,3 +24,5 @@ World Editor for Caronte Engine
 - Add a reset button to reset (or reload) the image to the default.
 - Add a button to change the background color to transparent.
 - Add support to copy&paste regions of pixels.
+- Add support to open multiple texture files.
+- Add custom filter to the finder so we can find Tiles, Decals or whatever...

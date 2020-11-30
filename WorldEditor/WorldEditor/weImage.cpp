@@ -125,8 +125,11 @@ void weImage::crop(double x, double y, double width, double height)
 {
     m_ImageModified = true;
 
+    MagickSetImagePage(m_pMagickWand, 0, 0, 0, 0);
+
     //MagickBooleanType crop = MagickCropImage(m_pMagickWand, width, height, x, y);
     m_pMagickWand = MagickGetImageRegion(m_pMagickWand, width, height, x, y);
+
 }
 
 void weImage::shave(size_t width, size_t height)
