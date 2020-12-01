@@ -95,6 +95,8 @@ private:
 
     void SelectedFile(wxTreeEvent &e);
     void OnExit(wxCommandEvent& evt);
+    void OnZoomIn(wxCommandEvent& evt);
+    void OnZoomOut(wxCommandEvent& evt);
 
     wxDECLARE_EVENT_TABLE();
 };

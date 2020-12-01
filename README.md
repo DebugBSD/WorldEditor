@@ -26,3 +26,6 @@ World Editor for Caronte Engine
 - Add support to copy&paste regions of pixels.
 - Add support to open multiple texture files.
 - Add custom filter to the finder so we can find Tiles, Decals or whatever...
+
+# NOTE
+- Zoom in/out is dangerous because when zooming too much, we lost the image. We should find another way to zoom in/out the image without losing the image.

@@ -6,6 +6,8 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_DIRCTRL_FILEACTIVATED(wxID_ANY, MainFrame::SelectedFile)
 EVT_SIZE(MainFrame::OnSize)
 EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+EVT_MENU(ID_ZoomIn, MainFrame::OnZoomIn)
+EVT_MENU(ID_ZoomOut, MainFrame::OnZoomOut)
 wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame():
@@ -144,4 +146,14 @@ void MainFrame::SelectedFile(wxTreeEvent& e)
 void MainFrame::OnExit(wxCommandEvent& evt)
 {
 	Close(true);
+}
+
+void MainFrame::OnZoomIn(wxCommandEvent& evt)
+{
+	m_pWorldCanvas->ScaleImage(1.5, 1.5);
+}
+
+void MainFrame::OnZoomOut(wxCommandEvent& evt)
+{
+	m_pWorldCanvas->ScaleImage(0.5, 0.5);
 }
