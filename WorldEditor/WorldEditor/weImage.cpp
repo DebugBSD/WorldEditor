@@ -165,6 +165,28 @@ void weImage::trim(double fuzz)
     MagickBooleanType trimmed = MagickTrimImage(m_pMagickWand, fuzz);
 }
 
+void weImage::composite(const std::vector<TCompositeImage>& images)
+{
+    MagickBooleanType status;
+    m_ImageModified = true;
+    for (TCompositeImage compImage : images)
+    {
+        MagickWand* tempWand = NewMagickWand();
+        /* read in the image */
+        status = MagickReadImage(tempWand, compImage.m_File.c_str());
+        if (status == MagickFalse)
+        {
+            // TODO: Handle errors
+            ThrowWandException(m_pMagickWand);
+            return;
+        }
+
+        MagickCompositeImage(m_pMagickWand, tempWand, OverCompositeOp, MagickTrue, compImage.m_Point.x, compImage.m_Point.y);
+
+        DestroyMagickWand(tempWand);
+    }
+}
+
 void weImage::readPixelsFromImage()
 {
     PixelWand *color;

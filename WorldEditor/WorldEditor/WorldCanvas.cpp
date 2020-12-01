@@ -161,6 +161,20 @@ void WorldCanvas::TrimImage(double fuzz)
 	m_ClearBackground = true;
 }
 
+void WorldCanvas::CompositeImage(const std::vector<TCompositeImage>& images)
+{
+	delete m_pImage;
+	m_pWEImage->composite(images);
+	m_pWEImage->update();
+
+	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
+	//sizes.push_back(m_pWEImage->getSize()); 
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
 void WorldCanvas::UpdateBitmap()
 {
 	int neww, newh;

@@ -2,6 +2,7 @@
 #include <wx/app.h>
 #include "Properties.h"
 #include "MainFrame.h"
+#include "weImage.h"
 
 wxBEGIN_EVENT_TABLE(Properties, wxWindow)
     EVT_BUTTON(ID_BUTTON_SAVE_COPY_AS,      Properties::OnSaveAs)
@@ -12,6 +13,11 @@ wxBEGIN_EVENT_TABLE(Properties, wxWindow)
     EVT_BUTTON(ID_BUTTON_SCALE,             Properties::OnScaleChanged)
     EVT_BUTTON(ID_BUTTON_SHAVE,             Properties::OnShaveChanged)
     EVT_BUTTON(ID_BUTTON_FLIP,              Properties::OnFlipChanged)
+    EVT_BUTTON(ID_BUTTON_COMPOSITE,         Properties::OnCompositeChanged)
+    EVT_BUTTON(ID_BUTTON_COMPOSITE_FIND_TEXTURE0,         Properties::OnFindTexture0)
+    EVT_BUTTON(ID_BUTTON_COMPOSITE_FIND_TEXTURE1,         Properties::OnFindTexture1)
+    EVT_BUTTON(ID_BUTTON_COMPOSITE_FIND_TEXTURE2,         Properties::OnFindTexture2)
+    EVT_BUTTON(ID_BUTTON_COMPOSITE_FIND_TEXTURE3,         Properties::OnFindTexture3)
 wxEND_EVENT_TABLE()
 
 Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style):
@@ -318,6 +324,78 @@ Properties::Properties(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
         2);                         // set border width to 1
     boxSizer->Add(shaveImageSizer, 0, wxALL | wxALIGN_CENTER);
 #pragma endregion
+
+#pragma region // Composite Image
+    wxFlexGridSizer* compositeImageSizeSizer = new wxFlexGridSizer(4, 7, 2, 2);
+
+    // Row 0
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "File:"),0,wxALL | wxALIGN_CENTER,2);
+
+    m_pCompositeFilename0TextCtrl = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize{ 100, -1 }, 0);
+    compositeImageSizeSizer->Add(m_pCompositeFilename0TextCtrl, 0, wxALL | wxEXPAND, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "X:"), 0, wxALL | wxALIGN_CENTER, 2);
+
+    m_pCompisteX0TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteX0TextCtrl, 0, wxALL, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "Y:"), 0, wxALL | wxALIGN_CENTER, 2 );
+    m_pCompisteY0TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteY0TextCtrl, 0, wxALL, 2);
+
+    compositeImageSizeSizer->Add(new wxButton(this, ID_BUTTON_COMPOSITE_FIND_TEXTURE0, "...", wxDefaultPosition, wxSize{20,-1}),0,  wxALL,2);
+
+    // Row 1
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "File:"), 0, wxALL | wxALIGN_CENTER, 2 );
+    m_pCompositeFilename1TextCtrl = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize{ 100, -1 }, 0);
+    compositeImageSizeSizer->Add(m_pCompositeFilename1TextCtrl, 0, wxALL | wxEXPAND, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "X:"), 0, wxALL | wxALIGN_CENTER, 2 );
+    m_pCompisteX1TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteX1TextCtrl, 0, wxALL, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "Y:"), 0, wxALL | wxALIGN_CENTER, 2);
+    m_pCompisteY1TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteY1TextCtrl, 0, wxALL, 2);
+
+    compositeImageSizeSizer->Add(new wxButton(this, ID_BUTTON_COMPOSITE_FIND_TEXTURE1, "...", wxDefaultPosition, wxSize{ 20,-1 }), 0, wxALL, 2);
+
+    // Row 2
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "File:"), 0, wxALL | wxALIGN_CENTER,2);
+    m_pCompositeFilename2TextCtrl = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize{ 100, -1 }, 0);
+    compositeImageSizeSizer->Add(m_pCompositeFilename2TextCtrl,0,  wxALL | wxEXPAND, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "X:"),0,wxALL | wxALIGN_CENTER,2);
+    m_pCompisteX2TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteX2TextCtrl,0,wxALL,2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "Y:"),0,wxALL | wxALIGN_CENTER,2);
+    m_pCompisteY2TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteY2TextCtrl,0, wxALL, 2);
+
+    compositeImageSizeSizer->Add( new wxButton(this, ID_BUTTON_COMPOSITE_FIND_TEXTURE2, "...", wxDefaultPosition, wxSize{ 20,-1 }),0, wxALL,2);
+
+    // Row 3
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "File:"),0,wxALL | wxALIGN_CENTER, 2 );
+
+    m_pCompositeFilename3TextCtrl = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize{ 100, -1 }, 0);
+    compositeImageSizeSizer->Add(m_pCompositeFilename3TextCtrl,0,wxALL | wxEXPAND, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "X:"),0,wxALL | wxALIGN_CENTER,2);
+    m_pCompisteX3TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteX3TextCtrl, 0,wxALL, 2);
+
+    compositeImageSizeSizer->Add(new wxStaticText(this, -1, "Y:"),0,wxALL | wxALIGN_CENTER,2);
+    m_pCompisteY3TextCtrl = new wxTextCtrl(this, wxID_ANY, "0", wxDefaultPosition, wxSize{ 50, -1 }, 0, cropYval);
+    compositeImageSizeSizer->Add(m_pCompisteY3TextCtrl,0,wxALL, 2);
+
+    compositeImageSizeSizer->Add(new wxButton(this, ID_BUTTON_COMPOSITE_FIND_TEXTURE3, "...", wxDefaultPosition, wxSize{ 20,-1 }),0,wxALL,2);
+
+    boxSizer->Add(compositeImageSizeSizer, 0, wxALL | wxEXPAND);
+
+    boxSizer->Add(new wxButton(this, ID_BUTTON_COMPOSITE, "Composite"), 0, wxALL, 2);
+#pragma endregion
+
 	SetSizerAndFit(boxSizer);
 }
 
@@ -438,4 +516,80 @@ void Properties::OnTrimChanged(wxCommandEvent& event)
     m_pMainFrame->GetWorldCanvas()->TrimImage(value);
 
     UpdateView();
+}
+
+void Properties::OnCompositeChanged(wxCommandEvent& event)
+{
+    std::vector<TCompositeImage> textures;
+
+    textures.resize(4);
+    TCompositeImage tempTexture; 
+
+    tempTexture.m_File = m_pCompositeFilename0TextCtrl->GetValue();
+    tempTexture.m_Point.x = wxAtoi(m_pCompisteX0TextCtrl->GetValue());
+    tempTexture.m_Point.y = wxAtoi(m_pCompisteY0TextCtrl->GetValue());
+    textures[0] = tempTexture;
+
+    tempTexture.m_File = m_pCompositeFilename1TextCtrl->GetValue();
+    tempTexture.m_Point.x = wxAtoi(m_pCompisteX1TextCtrl->GetValue());
+    tempTexture.m_Point.y = wxAtoi(m_pCompisteY1TextCtrl->GetValue());
+    textures[1] = tempTexture;
+
+    tempTexture.m_File = m_pCompositeFilename2TextCtrl->GetValue();
+    tempTexture.m_Point.x = wxAtoi(m_pCompisteX2TextCtrl->GetValue());
+    tempTexture.m_Point.y = wxAtoi(m_pCompisteY2TextCtrl->GetValue());
+    textures[2] = tempTexture;
+
+    tempTexture.m_File = m_pCompositeFilename3TextCtrl->GetValue();
+    tempTexture.m_Point.x = wxAtoi(m_pCompisteX3TextCtrl->GetValue());
+    tempTexture.m_Point.y = wxAtoi(m_pCompisteY3TextCtrl->GetValue());
+    textures[3] = tempTexture;
+
+    m_pMainFrame->GetWorldCanvas()->CompositeImage(textures);
+
+    UpdateView();
+}
+
+void Properties::OnFindTexture0(wxCommandEvent& event)
+{
+    wxFileDialog
+        openFileDialog(this, _("Open Image file"), "", "",
+            "Image files (*.png;*.jpg)|*.png;*.jpg", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+
+    m_pCompositeFilename0TextCtrl->SetValue(openFileDialog.GetPath());
+}
+
+void Properties::OnFindTexture1(wxCommandEvent& event)
+{
+    wxFileDialog
+        openFileDialog(this, _("Open Image file"), "", "",
+            "Image files (*.png;*.jpg)|*.png;*.jpg", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+
+    m_pCompositeFilename1TextCtrl->SetValue(openFileDialog.GetPath());
+}
+
+void Properties::OnFindTexture2(wxCommandEvent& event)
+{
+    wxFileDialog
+        openFileDialog(this, _("Open Image file"), "", "",
+            "Image files (*.png;*.jpg)|*.png;*.jpg", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+
+    m_pCompositeFilename2TextCtrl->SetValue(openFileDialog.GetPath());
+}
+
+void Properties::OnFindTexture3(wxCommandEvent& event)
+{
+    wxFileDialog
+        openFileDialog(this, _("Open Image file"), "", "",
+            "Image files (*.png;*.jpg)|*.png;*.jpg", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
+
+    m_pCompositeFilename3TextCtrl->SetValue(openFileDialog.GetPath());
 }

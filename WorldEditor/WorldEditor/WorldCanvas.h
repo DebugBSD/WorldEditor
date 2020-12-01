@@ -2,6 +2,8 @@
 #include <wx/wx.h>
 #include <wx/sizer.h>
 
+#include "weImage.h"
+
 class WorldCanvas :
     public wxPanel
 {
@@ -18,6 +20,7 @@ public:
     void RotateImage(float degrees);
     void ResizeImage(size_t width, size_t height);
     void TrimImage(double fuzz);
+    void CompositeImage(const std::vector<TCompositeImage> &images);
 
     bool init();
     void free();

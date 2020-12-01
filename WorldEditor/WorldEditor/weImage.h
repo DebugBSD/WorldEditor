@@ -1,11 +1,18 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <wx/wx.h>
 
 #include <MagickCore/MagickCore.h>
 #include <MagickWand/MagickWand.h>
+
+struct TCompositeImage
+{
+	std::string m_File;
+	wxPoint m_Point;
+};
 
 class weImage
 {
@@ -30,6 +37,7 @@ public:
 	void shave(size_t width, size_t height);
 	void rotate(double degrees);
 	void trim(double fuzz);
+	void composite(const std::vector<TCompositeImage>&images);
 
 private:
 

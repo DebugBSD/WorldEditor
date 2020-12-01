@@ -21,7 +21,12 @@ public:
         ID_BUTTON_SCALE,
         ID_BUTTON_CROP,
         ID_BUTTON_FLIP,
-        ID_BUTTON_TRIM
+        ID_BUTTON_TRIM,
+        ID_BUTTON_COMPOSITE,
+        ID_BUTTON_COMPOSITE_FIND_TEXTURE0,
+        ID_BUTTON_COMPOSITE_FIND_TEXTURE1,
+        ID_BUTTON_COMPOSITE_FIND_TEXTURE2,
+        ID_BUTTON_COMPOSITE_FIND_TEXTURE3
     };
 
     Properties(wxWindow* parent,
@@ -61,6 +66,7 @@ private:
     unsigned int m_ShaveWidth;
     unsigned int m_ShaveHeight;
 
+    // Controls
     wxTextCtrl* m_pFilenameTextCtrl;
     wxTextCtrl* m_pSizeWidthTextCtrl;
     wxTextCtrl* m_pSizeHeightTextCtrl;
@@ -75,6 +81,21 @@ private:
     wxTextCtrl* m_pShaveWidthTextCtrl;
     wxTextCtrl* m_pShaveHeightTextCtrl;
 
+    // Composite Controls
+    wxTextCtrl* m_pCompositeFilename0TextCtrl;
+    wxTextCtrl* m_pCompositeFilename1TextCtrl;
+    wxTextCtrl* m_pCompositeFilename2TextCtrl;
+    wxTextCtrl* m_pCompositeFilename3TextCtrl;
+    wxTextCtrl* m_pCompisteX0TextCtrl;
+    wxTextCtrl* m_pCompisteY0TextCtrl;
+    wxTextCtrl* m_pCompisteX1TextCtrl;
+    wxTextCtrl* m_pCompisteY1TextCtrl;
+    wxTextCtrl* m_pCompisteX2TextCtrl;
+    wxTextCtrl* m_pCompisteY2TextCtrl;
+    wxTextCtrl* m_pCompisteX3TextCtrl;
+    wxTextCtrl* m_pCompisteY3TextCtrl;
+
+
 private:
 
     void UpdateView();
@@ -87,6 +108,11 @@ private:
     void OnCropChanged(wxCommandEvent& event);
     void OnFlipChanged(wxCommandEvent& event);
     void OnTrimChanged(wxCommandEvent& event);
+    void OnCompositeChanged(wxCommandEvent& event);
+    void OnFindTexture0(wxCommandEvent& event);
+    void OnFindTexture1(wxCommandEvent& event);
+    void OnFindTexture2(wxCommandEvent& event);
+    void OnFindTexture3(wxCommandEvent& event);
 
     wxDECLARE_EVENT_TABLE();
 };
