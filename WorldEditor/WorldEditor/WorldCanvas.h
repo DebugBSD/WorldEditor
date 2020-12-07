@@ -1,6 +1,10 @@
 #pragma once
 #include <wx/wx.h>
 #include <wx/sizer.h>
+#include <wx/aui/auibook.h>
+#include <wx/filename.h>
+
+#include <vector>
 
 #include "weImage.h"
 
@@ -9,8 +13,10 @@ class WorldCanvas :
 {
 public:
     WorldCanvas(wxWindow *pParent, wxWindowID id, const wxPoint &Position, const wxSize &size, long style = 0);
+    ~WorldCanvas();
 
     bool OpenTexture(const wxString &pathToTexture);
+    class weImage* getImage() { return m_pWEImage; }
 
     wxSize ImageSize();
     void SaveImage();
@@ -25,6 +31,8 @@ public:
     bool init();
     void free();
 
+    bool Destroy();
+
 private:
     class weImage* m_pWEImage;
     wxImage *m_pImage;
@@ -34,7 +42,6 @@ private:
     bool m_ClearBackground;
     wxCoord m_DrawPositionX;
     wxCoord m_DrawPositionY;
-
 private:
 
     void UpdateBitmap();
@@ -59,3 +66,24 @@ private:
     wxDECLARE_EVENT_TABLE();
 };
 
+class wxWorldCanvasNotebook: public wxAuiNotebook
+{
+public:
+    wxWorldCanvasNotebook(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxAUI_NB_DEFAULT_STYLE);
+    ~wxWorldCanvasNotebook();
+
+    bool OpenCanvas(const wxString &texture);
+
+private:
+    class MainFrame* m_pMainFrame;
+    class WorldCanvas *m_pCurrentCanvas;
+
+private:
+    // Events
+    void OnCloseTab(wxAuiNotebookEvent& event);
+    void OnClosedTab(wxAuiNotebookEvent& event);
+    void OnTabChanged(wxAuiNotebookEvent& event);
+
+    wxDECLARE_EVENT_TABLE();
+
+};

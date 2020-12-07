@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "WorldCanvas.h"
 #include "weImage.h"
 
@@ -23,6 +24,12 @@ wxBEGIN_EVENT_TABLE(WorldCanvas, wxPanel)
 	EVT_SIZE(WorldCanvas::OnSize)
 wxEND_EVENT_TABLE()
 
+wxBEGIN_EVENT_TABLE(wxWorldCanvasNotebook, wxAuiNotebook)
+	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, wxWorldCanvasNotebook::OnCloseTab)
+	EVT_AUINOTEBOOK_PAGE_CLOSED(wxID_ANY, wxWorldCanvasNotebook::OnClosedTab)
+	EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, wxWorldCanvasNotebook::OnTabChanged)
+wxEND_EVENT_TABLE()
+
 WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Position, const wxSize& size, long style) :
 	wxPanel(pParent, wxID_ANY),
 	m_Width{-1},
@@ -34,6 +41,11 @@ WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Positi
 	m_pWEImage{NULL}
 {
 
+}
+
+WorldCanvas::~WorldCanvas()
+{
+	free();
 }
 
 bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
@@ -215,6 +227,13 @@ void WorldCanvas::free()
 
 }
 
+bool WorldCanvas::Destroy()
+{
+	free();
+
+	return true;
+}
+
 void WorldCanvas::OnIdle(wxIdleEvent& event)
 {
 	paintNow();
@@ -259,4 +278,51 @@ void WorldCanvas::render(wxDC& dc)
 
 	dc.DrawBitmap(m_Bitmap, m_DrawPositionX, m_DrawPositionY, true);
 
+}
+
+wxWorldCanvasNotebook::wxWorldCanvasNotebook(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style):
+	wxAuiNotebook(parent, id, pos, size, style),
+	m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) },
+	m_pCurrentCanvas{nullptr}
+{
+}
+
+wxWorldCanvasNotebook::~wxWorldCanvasNotebook()
+{
+	int stop = 1;
+}
+
+bool wxWorldCanvasNotebook::OpenCanvas(const wxString& texture)
+{
+	WorldCanvas* canvas = new WorldCanvas{ this, wxID_ANY, wxDefaultPosition, wxDefaultSize };
+	canvas->OpenTexture(texture);
+
+	wxFileName filename{ texture };
+
+	AddPage(canvas, filename.GetName(), true);
+
+	return false;
+}
+
+// Called when the tab is about to be closed.
+void wxWorldCanvasNotebook::OnCloseTab(wxAuiNotebookEvent& event)
+{
+	m_pCurrentCanvas = (WorldCanvas *)GetCurrentPage();
+}
+
+// Called after the tab has been closed.
+void wxWorldCanvasNotebook::OnClosedTab(wxAuiNotebookEvent& event)
+{
+	if (m_pCurrentCanvas != nullptr)
+	{
+		m_pCurrentCanvas->Destroy();
+		m_pCurrentCanvas = nullptr;
+	}
+}
+
+void wxWorldCanvasNotebook::OnTabChanged(wxAuiNotebookEvent& event)
+{
+	WorldCanvas* canvas = (WorldCanvas*)GetCurrentPage();
+
+	m_pMainFrame->GetStatusBar()->SetStatusText(canvas->getImage()->getFileName());
 }

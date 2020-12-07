@@ -12,7 +12,7 @@ wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame():
 	wxFrame(NULL, wxID_ANY, "WorldEditor", wxPoint{0,0}, wxSize(1600, 960)),
-	m_pWorldCanvas{nullptr},
+	m_pWorldCanvasNotebook{nullptr},
 	m_pProperties{nullptr},
 	m_pDirCtrl{nullptr},
 	m_pExceptionInfo{nullptr}
@@ -31,12 +31,12 @@ MainFrame::MainFrame():
 	GetStatusBar()->SetStatusText(_("Ready"));
 
 	// Directory control
-	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Tiles", wxDefaultPosition, wxSize{ 500, 500 }, 128, "Image Files|*.png;*.jpg;*.jpeg");
+	m_pDirCtrl = new wxGenericDirCtrl(this, wxID_ANY, "C:\\Users\\debugg\\My Projects\\Videojuegos\\Heroes of Magic Worlds\\Game\\Debug\\Resources\\Levels\\Textures", wxDefaultPosition, wxSize{ 500, 500 }, 128, "Image Files|*.png;*.jpg;*.jpeg");
 	m_mgr.AddPane(m_pDirCtrl);
 
-	// Canvas to render textures
-	m_pWorldCanvas = new WorldCanvas(this, wxID_ANY, wxDefaultPosition, wxSize{ 1024, 720 });
-	m_mgr.AddPane(m_pWorldCanvas, wxAuiPaneInfo().Name("WorldCanvas").
+	// Notebook to render the canvas for every texture
+	m_pWorldCanvasNotebook = new wxWorldCanvasNotebook(this, wxID_ANY, wxDefaultPosition, wxSize{ 1024, 720 });
+	m_mgr.AddPane(m_pWorldCanvasNotebook, wxAuiPaneInfo().Name("WorldCanvasNotebook").
 		CenterPane().PaneBorder(false));
 
 	// Properties window
@@ -57,10 +57,10 @@ MainFrame::~MainFrame()
 {
 	m_pExceptionInfo = DestroyExceptionInfo(m_pExceptionInfo);
 
-	if (m_pWorldCanvas)
+	if (m_pWorldCanvasNotebook)
 	{
-		delete m_pWorldCanvas;
-		m_pWorldCanvas = nullptr;
+		delete m_pWorldCanvasNotebook;
+		m_pWorldCanvasNotebook = nullptr;
 	}
 }
 
@@ -136,9 +136,9 @@ wxMenuBar* MainFrame::CreateMenuBar()
 
 void MainFrame::SelectedFile(wxTreeEvent& e)
 {
-	
+
 	wxString filename = m_pDirCtrl->GetPath(e.GetItem());
-	m_pWorldCanvas->OpenTexture(filename);
+	m_pWorldCanvasNotebook->OpenCanvas(filename);
 	m_pProperties->SetFileName(filename);
 	GetStatusBar()->SetStatusText(filename);
 }
@@ -150,10 +150,14 @@ void MainFrame::OnExit(wxCommandEvent& evt)
 
 void MainFrame::OnZoomIn(wxCommandEvent& evt)
 {
-	m_pWorldCanvas->ScaleImage(1.5, 1.5);
+	WorldCanvas* canvas = (WorldCanvas*)m_pWorldCanvasNotebook->GetCurrentPage();
+	if(canvas)
+		canvas->ScaleImage(1.5, 1.5);
 }
 
 void MainFrame::OnZoomOut(wxCommandEvent& evt)
 {
-	m_pWorldCanvas->ScaleImage(0.5, 0.5);
+	WorldCanvas* canvas = (WorldCanvas*)m_pWorldCanvasNotebook->GetCurrentPage();
+	if(canvas)
+		canvas->ScaleImage(0.5, 0.5);
 }

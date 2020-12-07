@@ -79,7 +79,7 @@ public:
     void Update();
     void OnSize(wxSizeEvent &event);
 
-    WorldCanvas* GetWorldCanvas() { return m_pWorldCanvas; }
+    WorldCanvas* GetWorldCanvas() { return (WorldCanvas*)m_pWorldCanvasNotebook->GetCurrentPage(); }
 
     ExceptionInfo* GetExceptionInfoPtr() { return m_pExceptionInfo; }
 
@@ -89,7 +89,7 @@ private:
     wxMenuBar* CreateMenuBar();
 
     wxAuiManager m_mgr;
-    WorldCanvas* m_pWorldCanvas; 
+    wxWorldCanvasNotebook* m_pWorldCanvasNotebook;
     Properties* m_pProperties;
     wxGenericDirCtrl* m_pDirCtrl;
 

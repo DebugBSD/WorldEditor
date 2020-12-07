@@ -26,6 +26,8 @@ public:
 	void read();
 	void save();
 
+	wxString getFileName() { return m_Filename; }
+
 	uint8_t* getPixels() { return m_pPixels; }
 	uint8_t* getAlphaPixels() { return m_pAlphaPixels; }
 	wxSize getSize();
