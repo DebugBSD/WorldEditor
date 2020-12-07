@@ -48,6 +48,15 @@ WorldCanvas::~WorldCanvas()
 	free();
 }
 
+void WorldCanvas::CreateTexture(const wxSize& size)
+{
+	m_pWEImage = new weImage();
+	m_pWEImage->init(size);
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
 bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 {
 	free();
@@ -300,6 +309,16 @@ bool wxWorldCanvasNotebook::OpenCanvas(const wxString& texture)
 	wxFileName filename{ texture };
 
 	AddPage(canvas, filename.GetName(), true);
+
+	return false;
+}
+
+bool wxWorldCanvasNotebook::NewCanvas(const wxSize& size)
+{
+	WorldCanvas* canvas = new WorldCanvas{ this, wxID_ANY, wxDefaultPosition, wxDefaultSize };
+	canvas->CreateTexture(size);
+
+	AddPage(canvas, "New", true);
 
 	return false;
 }

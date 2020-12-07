@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "MainFrame.h"
+#include "NewImageDlg.h"
 #include "SFML/Graphics.hpp"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_DIRCTRL_FILEACTIVATED(wxID_ANY, MainFrame::SelectedFile)
 EVT_SIZE(MainFrame::OnSize)
 EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+EVT_MENU(ID_New, MainFrame::OnNewTexture)
 EVT_MENU(ID_ZoomIn, MainFrame::OnZoomIn)
 EVT_MENU(ID_ZoomOut, MainFrame::OnZoomOut)
 wxEND_EVENT_TABLE()
@@ -73,6 +75,18 @@ void MainFrame::Update()
 {
 }
 
+void MainFrame::OnNewTexture(wxCommandEvent& event)
+{
+	NewImageDlg newImage;
+
+	if (newImage.ShowModal() == wxID_OK)
+	{
+		wxSize size = newImage.GetSizeOfCanvas();
+
+		m_pWorldCanvasNotebook->NewCanvas(size);
+	}
+}
+
 void MainFrame::OnSize(wxSizeEvent& event)
 {
 	Refresh();
@@ -84,6 +98,7 @@ wxMenuBar* MainFrame::CreateMenuBar()
 	wxMenuBar* mb = new wxMenuBar{};
 
 	wxMenu* fileMenu = new wxMenu();
+	fileMenu->Append(ID_New, "New Texture", "Create a new empty texture");
 	fileMenu->Append(wxID_EXIT);
 	wxMenu* editMenu = new wxMenu();
 	wxMenu* viewMenu = new wxMenu();

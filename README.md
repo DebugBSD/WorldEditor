@@ -2,7 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Create an empty canvas where to draw.
 - Create a Toolbar with every ImageMagick Operator (Composite, Crop, Resize, Scale, ...).
 - Create different subwindows for every Operator (Scale, Resize, Crop, ...) instead of using just a single window.
 - Add a ruler on the image.

@@ -20,6 +20,7 @@ public:
 	weImage();
 	~weImage();
 
+	bool init(const wxSize& size, bool transparent = true);
 	bool init(const std::string &filename);
 	void free();
 

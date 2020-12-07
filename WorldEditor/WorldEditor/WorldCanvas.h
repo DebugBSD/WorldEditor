@@ -15,6 +15,7 @@ public:
     WorldCanvas(wxWindow *pParent, wxWindowID id, const wxPoint &Position, const wxSize &size, long style = 0);
     ~WorldCanvas();
 
+    void CreateTexture(const wxSize &size);
     bool OpenTexture(const wxString &pathToTexture);
     class weImage* getImage() { return m_pWEImage; }
 
@@ -73,6 +74,7 @@ public:
     ~wxWorldCanvasNotebook();
 
     bool OpenCanvas(const wxString &texture);
+    bool NewCanvas(const wxSize &size);
 
 private:
     class MainFrame* m_pMainFrame;

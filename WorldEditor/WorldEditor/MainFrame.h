@@ -77,6 +77,7 @@ public:
 
     wxAuiDockArt* GetDockArt();
     void Update();
+    void OnNewTexture(wxCommandEvent &event);
     void OnSize(wxSizeEvent &event);
 
     WorldCanvas* GetWorldCanvas() { return (WorldCanvas*)m_pWorldCanvasNotebook->GetCurrentPage(); }

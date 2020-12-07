@@ -24,6 +24,40 @@ weImage::~weImage()
     }
 }
 
+bool weImage::init(const wxSize& size, bool transparent)
+{
+    PixelWand* color;
+    MagickWand* pPattern = NewMagickWand();
+
+    if (m_pMagickWand != NULL)
+    {
+        m_pMagickWand = DestroyMagickWand(m_pMagickWand);
+        m_pMagickWand = NULL;
+    }
+
+    m_pMagickWand = NewMagickWand();
+
+
+    color = NewPixelWand();
+    if (transparent == true)
+    {
+        PixelSetColor(color, "transparent");
+        MagickNewImage(m_pMagickWand, size.x, size.y, color);
+        MagickReadImage(pPattern, "pattern:checkerboard");
+        m_pMagickWand = MagickTextureImage(m_pMagickWand, pPattern);
+    }
+    else
+    {
+        PixelSetColor(color, "black");
+        MagickNewImage(m_pMagickWand, size.x, size.y, color);
+    }
+
+
+    readPixelsFromImage();
+
+    return true;
+}
+
 bool weImage::init(const std::string& filename)
 {
     MagickBooleanType
