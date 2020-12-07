@@ -88,6 +88,7 @@ private:
     ExceptionInfo* m_pExceptionInfo;
 
     wxMenuBar* CreateMenuBar();
+    wxAuiToolBar* CreateImageToolsTB();
 
     wxAuiManager m_mgr;
     wxWorldCanvasNotebook* m_pWorldCanvasNotebook;

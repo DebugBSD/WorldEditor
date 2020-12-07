@@ -2,7 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Create a Toolbar with every ImageMagick Operator (Composite, Crop, Resize, Scale, ...).
 - Create different subwindows for every Operator (Scale, Resize, Crop, ...) instead of using just a single window.
 - Add a ruler on the image.
 - Create a custom Directory control where to show all files (Change the wxGenericDirCtrl by a custom control).
@@ -35,3 +34,6 @@ World Editor for Caronte Engine
 # ImageMagick Framework (MagickWand)
 - ImageMagick Main page: https://imagemagick.org/
 - URL: https://imagemagick.org/api/magick-image.php
+
+# ICONS
+- https://www.flaticon.com/

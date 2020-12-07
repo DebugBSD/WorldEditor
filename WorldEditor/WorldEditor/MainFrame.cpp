@@ -128,6 +128,7 @@ wxMenuBar* MainFrame::CreateMenuBar()
 
 	wxAuiToolBar* tb3 = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
 		wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORIZONTAL);
+	tb3->SetToolBitmapSize(FromDIP(wxSize(16, 16)));
 	tb3->AddTool(ID_ZoomIn, "Zoom In", wxArtProvider::GetBitmap(wxART_PLUS));
 	tb3->AddTool(ID_ZoomOut, "Zoom Out", wxArtProvider::GetBitmap(wxART_MINUS));
 
@@ -138,7 +139,11 @@ wxMenuBar* MainFrame::CreateMenuBar()
 	m_mgr.AddPane(tb3, wxAuiPaneInfo().
 		Name("tb3").Caption("Zoom Toolbar").
 		ToolbarPane().Top().Row(1));
-
+	
+	m_mgr.AddPane(CreateImageToolsTB(), wxAuiPaneInfo().
+		Name("imageTools").Caption("Image Tools Toolbar").
+		ToolbarPane().Top().Row(1));
+		
 	mb->Append(fileMenu, _("&File"));
 	mb->Append(editMenu, _("&Edit"));
 	mb->Append(viewMenu, _("&View"));
@@ -147,6 +152,40 @@ wxMenuBar* MainFrame::CreateMenuBar()
 	mb->Append(helpMenu, _("&Help"));
 
 	return mb;
+}
+
+wxAuiToolBar* MainFrame::CreateImageToolsTB()
+{
+	wxAuiToolBar* imageToolsToolBar = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+		wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORIZONTAL);
+	imageToolsToolBar->SetToolBitmapSize(FromDIP(wxSize(16, 16)));
+	
+	struct imageTools {
+		int id;
+		wxString caption;
+		const char *filename;
+		int scaleWidth;
+		int scaleHeight;
+	} imgTools[] =
+	{
+		{ wxID_ANY, "Crop", "icons/crop.png", 16, 16 },
+		{ wxID_ANY, "Resize", "icons/resize.png", 16, 16 },
+		{ wxID_ANY, "Rotate", "icons/rotate-right.png", 16, 16 },
+		{ wxID_ANY, "Scale", "icons/scale.png", 16, 16 },
+		{ wxID_ANY, "Shave", "icons/shave.png", 16, 16 },
+		{ wxID_ANY, "Trim", "icons/trim.png", 16, 16 },
+		{ wxID_ANY, "", NULL, 0, 0}
+	};
+
+	for(int i = 0; imgTools[i].filename != NULL; i++)
+	{
+		wxImage img{ imgTools[i].filename };
+		img = img.Scale(imgTools[i].scaleWidth, imgTools[i].scaleHeight);
+		wxBitmap bmp(img, wxBITMAP_TYPE_PNG);
+		imageToolsToolBar->AddTool(imgTools[i].id, imgTools[i].caption, bmp);
+	}
+
+	return imageToolsToolBar;
 }
 
 void MainFrame::SelectedFile(wxTreeEvent& e)
