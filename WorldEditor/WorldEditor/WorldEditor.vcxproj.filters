@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de encabezado\ImageTools">
+      <UniqueIdentifier>{3bf8ae37-2d1b-40b6-b364-581a77d99202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\ImageTools">
+      <UniqueIdentifier>{063b80e9-d6eb-403b-9451-09be7822ed16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -42,6 +48,27 @@
     <ClInclude Include="NewImageDlg.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="ImageToolResizePage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageToolRotatePage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageToolScalePage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageToolCropPage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageToolTrimPage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageToolShavePage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageToolCompositePage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -64,6 +91,27 @@
     </ClCompile>
     <ClCompile Include="NewImageDlg.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolResizePage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolRotatePage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolScalePage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolCropPage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolTrimPage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolShavePage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolCompositePage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

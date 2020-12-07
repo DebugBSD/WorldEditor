@@ -175,6 +175,13 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ImageToolCompositePage.h" />
+    <ClInclude Include="ImageToolCropPage.h" />
+    <ClInclude Include="ImageToolResizePage.h" />
+    <ClInclude Include="ImageToolRotatePage.h" />
+    <ClInclude Include="ImageToolScalePage.h" />
+    <ClInclude Include="ImageToolShavePage.h" />
+    <ClInclude Include="ImageToolTrimPage.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="NewImageDlg.h" />
     <ClInclude Include="Properties.h" />
@@ -186,6 +193,13 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
     <ClInclude Include="wxSFMLCanvas.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImageToolCompositePage.cpp" />
+    <ClCompile Include="ImageToolCropPage.cpp" />
+    <ClCompile Include="ImageToolResizePage.cpp" />
+    <ClCompile Include="ImageToolRotatePage.cpp" />
+    <ClCompile Include="ImageToolScalePage.cpp" />
+    <ClCompile Include="ImageToolShavePage.cpp" />
+    <ClCompile Include="ImageToolTrimPage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="NewImageDlg.cpp" />

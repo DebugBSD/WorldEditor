@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "MainFrame.h"
 #include "NewImageDlg.h"
+#include "ImageToolResizePage.h"
+#include "ImageToolRotatePage.h"
+#include "ImageToolScalePage.h"
+#include "ImageToolCropPage.h"
+#include "ImageToolTrimPage.h"
+#include "ImageToolCompositePage.h"
+#include "ImageToolShavePage.h"
 #include "SFML/Graphics.hpp"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -17,9 +24,9 @@ MainFrame::MainFrame():
 	m_pWorldCanvasNotebook{nullptr},
 	m_pProperties{nullptr},
 	m_pDirCtrl{nullptr},
-	m_pExceptionInfo{nullptr}
+	m_pExceptionInfo{nullptr},
+	m_pImageToolResize{nullptr}
 {
-
 	m_pExceptionInfo = AcquireExceptionInfo();
 
 	m_mgr.SetManagedWindow(this);
@@ -41,11 +48,39 @@ MainFrame::MainFrame():
 	m_mgr.AddPane(m_pWorldCanvasNotebook, wxAuiPaneInfo().Name("WorldCanvasNotebook").
 		CenterPane().PaneBorder(false));
 
+	// Image tool resize
+	m_pImageToolResize = new ImageToolResizePage(this);
+	m_mgr.AddPane(m_pImageToolResize, wxAuiPaneInfo().Name("Resize").Caption("Resize").Fixed().
+		Right());
+
+	m_pImageToolRotate = new ImageToolRotatePage(this);
+	m_mgr.AddPane(m_pImageToolRotate, wxAuiPaneInfo().Name("Rotate").Caption("Rotate").Fixed().
+		Right());
+
+	m_pImageToolScale = new ImageToolScalePage(this);
+	m_mgr.AddPane(m_pImageToolScale, wxAuiPaneInfo().Name("Scale").Caption("Scale").Fixed().
+		Right());
+
+	m_pImageToolCrop = new ImageToolCropPage(this);
+	m_mgr.AddPane(m_pImageToolCrop, wxAuiPaneInfo().Name("Crop").Caption("Crop").Fixed().
+		Right());
+
+	m_pImageToolTrim = new ImageToolTrimPage(this);
+	m_mgr.AddPane(m_pImageToolTrim, wxAuiPaneInfo().Name("Trim").Caption("Trim").Fixed().
+		Right());
+
+	m_pImageToolComposite = new ImageToolCompositePage(this);
+	m_mgr.AddPane(m_pImageToolComposite, wxAuiPaneInfo().Name("Composite").Caption("Composite").Fixed().
+		Right());
+
+	m_pImageToolShave = new ImageToolShavePage(this);
+	m_mgr.AddPane(m_pImageToolShave, wxAuiPaneInfo().Name("Shave").Caption("Shave").Fixed().
+		Right());
+
 	// Properties window
 	m_pProperties = new Properties(this, wxID_ANY, wxDefaultPosition, wxSize{ 500, 500 });
 	m_mgr.AddPane(m_pProperties, wxAuiPaneInfo().Name("Properties").Caption("Properties").
 		Right());
-
 
 	m_mgr.Update();
 }
@@ -139,7 +174,7 @@ wxMenuBar* MainFrame::CreateMenuBar()
 	m_mgr.AddPane(tb3, wxAuiPaneInfo().
 		Name("tb3").Caption("Zoom Toolbar").
 		ToolbarPane().Top().Row(1));
-	
+
 	m_mgr.AddPane(CreateImageToolsTB(), wxAuiPaneInfo().
 		Name("imageTools").Caption("Image Tools Toolbar").
 		ToolbarPane().Top().Row(1));

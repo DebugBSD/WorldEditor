@@ -95,6 +95,15 @@ private:
     Properties* m_pProperties;
     wxGenericDirCtrl* m_pDirCtrl;
 
+    // Image Tools
+    class ImageToolResizePage* m_pImageToolResize;
+    class ImageToolRotatePage* m_pImageToolRotate;
+    class ImageToolScalePage *m_pImageToolScale;
+    class ImageToolCropPage* m_pImageToolCrop;
+    class ImageToolTrimPage* m_pImageToolTrim;
+    class ImageToolCompositePage* m_pImageToolComposite;
+    class ImageToolShavePage* m_pImageToolShave;
+
     void SelectedFile(wxTreeEvent &e);
     void OnExit(wxCommandEvent& evt);
     void OnZoomIn(wxCommandEvent& evt);
