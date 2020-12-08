@@ -90,7 +90,7 @@ MainFrame::MainFrame():
 		Right());
 
 	m_pLogger = new Logger(this);
-	m_mgr.AddPane(m_pLogger, wxAuiPaneInfo().Name("Logger").Caption("Logger").
+	m_mgr.AddPane(m_pLogger, wxAuiPaneInfo().Name("Logger").Caption("Logger").MinSize(-1,200).
 		Bottom());
 
 	// Disable views so user can't interact with them when there is no texture

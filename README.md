@@ -2,7 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Handle errors (File Not Found, information about the file, errors when modifying the images, ...)
 - Make Flip (Horizontal and vertical)
 - Add the possibility to handle and create texture atlas as well as split texture atlas.
 	- See: https://imagemagick.org/api/magick-image.php#MagickMontageImage

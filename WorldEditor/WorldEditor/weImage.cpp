@@ -52,6 +52,8 @@ bool weImage::init(const wxSize& size, bool transparent)
         MagickNewImage(m_pMagickWand, size.x, size.y, color);
     }
 
+    char* pInfo = MagickIdentifyImage(m_pMagickWand);
+    wxLogWarning(pInfo);
 
     readPixelsFromImage();
 
@@ -81,8 +83,8 @@ bool weImage::init(const std::string& filename)
         ThrowWandException(m_pMagickWand);
     }
 
-    // Add a window where to show more info about the file
-    //char* pInfo = MagickIdentifyImage(m_pMagickWand);
+    char* pInfo = MagickIdentifyImage(m_pMagickWand);
+    wxLogWarning(pInfo);
 
     readPixelsFromImage();
 

@@ -5,7 +5,7 @@
 
 #include <vector>
 
-wxBEGIN_EVENT_TABLE(WorldCanvas, wxPanel)
+wxBEGIN_EVENT_TABLE(WorldCanvas, wxScrolledCanvas)
 // some useful events
 /*
  EVT_MOTION(wxImagePanel::mouseMoved)
@@ -31,7 +31,7 @@ wxBEGIN_EVENT_TABLE(wxWorldCanvasNotebook, wxAuiNotebook)
 wxEND_EVENT_TABLE()
 
 WorldCanvas::WorldCanvas(wxWindow* pParent, wxWindowID id, const wxPoint& Position, const wxSize& size, long style) :
-	wxPanel(pParent, wxID_ANY),
+	wxScrolledCanvas(pParent, wxID_ANY),
 	m_Width{-1},
 	m_Height{-1},
 	m_ClearBackground{ true },
@@ -53,6 +53,7 @@ void WorldCanvas::CreateTexture(const wxSize& size)
 	m_pWEImage = new weImage();
 	m_pWEImage->init(size);
 	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	SetScrollbars(1, 1, m_pWEImage->getSize().x, m_pWEImage->getSize().y, 0, 0);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -67,6 +68,9 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
 	if (success)
 	{
+
+		/* init scrolled area size, scrolling speed, etc. */
+		SetScrollbars(1, 1, m_pWEImage->getSize().x, m_pWEImage->getSize().y, 0, 0);
 		UpdateBitmap();
 		m_ClearBackground = true;
 	}

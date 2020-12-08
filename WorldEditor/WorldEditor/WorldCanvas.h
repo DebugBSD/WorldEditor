@@ -9,7 +9,7 @@
 #include "weImage.h"
 
 class WorldCanvas :
-    public wxPanel
+    public wxScrolledCanvas
 {
 public:
     WorldCanvas(wxWindow *pParent, wxWindowID id, const wxPoint &Position, const wxSize &size, long style = 0);

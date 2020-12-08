@@ -39,6 +39,7 @@
     description = MagickGetException(wand, &severity);                      \
     (void)fprintf(stderr, "%s %s %lu %s\n", GetMagickModule(), description); \
     description = (char*)MagickRelinquishMemory(description);               \
+    wxLogWarning(description);                                              \
     }                                                                       \
 
 
