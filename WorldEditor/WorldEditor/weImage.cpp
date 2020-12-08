@@ -114,6 +114,17 @@ void weImage::save()
 	}
 }
 
+void weImage::saveAs(const std::string& filename)
+{
+    /* read in the image */
+    MagickBooleanType status = MagickWriteImage(m_pMagickWand, filename.c_str());
+    if (status == MagickFalse)
+    {
+        // TODO: Handle errors
+        ThrowWandException(m_pMagickWand);
+    }
+}
+
 wxSize weImage::getSize()
 {
     wxSize size;

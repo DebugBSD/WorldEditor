@@ -77,14 +77,17 @@ public:
 
     wxAuiDockArt* GetDockArt();
     void Update();
-    void OnNewTexture(wxCommandEvent &event);
-    void OnSize(wxSizeEvent &event);
+    void OnNewTexture(wxCommandEvent& event);
+    void OnSize(wxSizeEvent& event);
 
     WorldCanvas* GetWorldCanvas() { return (WorldCanvas*)m_pWorldCanvasNotebook->GetCurrentPage(); }
-
+    wxWorldCanvasNotebook* GetWorldCanvasNotebook() { return m_pWorldCanvasNotebook; }
     ExceptionInfo* GetExceptionInfoPtr() { return m_pExceptionInfo; }
 
     void UpdateView();
+    void EnableViews();
+    void DisableViews();
+
 
 private:
     ExceptionInfo* m_pExceptionInfo;

@@ -82,6 +82,9 @@ MainFrame::MainFrame():
 	m_mgr.AddPane(m_pImageToolShave, wxAuiPaneInfo().Name("Shave").Caption("Shave").Fixed().
 		Right());
 
+	// Disable views so user can't interact with them when there is no texture
+	DisableViews();
+
 	m_mgr.Update();
 }
 
@@ -119,6 +122,8 @@ void MainFrame::OnNewTexture(wxCommandEvent& event)
 		wxSize size = newImage.GetSizeOfCanvas();
 
 		m_pWorldCanvasNotebook->NewCanvas(size);
+
+		EnableViews();
 	}
 }
 
@@ -130,6 +135,30 @@ void MainFrame::OnSize(wxSizeEvent& event)
 void MainFrame::UpdateView()
 {
 	m_pImageToolResize->UpdateView();
+}
+
+void MainFrame::EnableViews()
+{
+	m_pProperties->Enable();
+	m_pImageToolResize->Enable();
+	m_pImageToolRotate->Enable();
+	m_pImageToolScale->Enable();
+	m_pImageToolCrop->Enable();
+	m_pImageToolTrim->Enable();
+	m_pImageToolComposite->Enable();
+	m_pImageToolShave->Enable();
+}
+
+void MainFrame::DisableViews()
+{
+	m_pProperties->Disable();
+	m_pImageToolResize->Disable();
+	m_pImageToolRotate->Disable();
+	m_pImageToolScale->Disable();
+	m_pImageToolCrop->Disable();
+	m_pImageToolTrim->Disable();
+	m_pImageToolComposite->Disable();
+	m_pImageToolShave->Disable();
 }
 
 wxMenuBar* MainFrame::CreateMenuBar()
@@ -235,6 +264,8 @@ void MainFrame::SelectedFile(wxTreeEvent& e)
 	m_pWorldCanvasNotebook->OpenCanvas(filename);
 	m_pProperties->SetFileName(filename);
 	GetStatusBar()->SetStatusText(filename);
+
+	EnableViews();
 }
 
 void MainFrame::OnExit(wxCommandEvent& evt)

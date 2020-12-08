@@ -2,13 +2,13 @@
 World Editor for Caronte Engine
 
 # TODO
-- Implement the button: "Save Copy As"
 - Add a Scene Window where to put all layers.
 - Add a Log window and handle errors reported by ImageMagick Framework (wxLog).
 	- See ImageMagick errors: https://imagemagick.org/script/exception.php and https://imagemagick.org/api/exception.php
 - Make Flip (Horizontal and vertical)
 - Add the possibility to handle and create texture atlas as well as split texture atlas.
 	- See: https://imagemagick.org/api/magick-image.php#MagickMontageImage
+- Detect changes in the image and ask for save before quit the program or close the application.
 - Add the possibility to create animations based on textures.
 - Add a drawing tool to draw into the texture.
 - Add a paint tool to paint the level using textures. (See: MagickImportImagePixels or MagickCompositeImage/MagickCompositeLayers)
@@ -27,6 +27,7 @@ World Editor for Caronte Engine
 - Particle Editor.
 - Sound.
 - Add Fade In/Out (see Blend/Disolve in ImageMagick)
+- Think carefully about how to update all views.
 
 # NOTE
 - Zoom in/out is dangerous because when zooming too much, we lost the image. We should find another way to zoom in/out the image without losing the image.

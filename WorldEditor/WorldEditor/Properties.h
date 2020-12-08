@@ -16,6 +16,7 @@ public:
         ID_BUTTON_SAVE_COPY_AS = wxID_HIGHEST + 1,
         ID_BUTTON_SAVE_CURRENT,
         ID_BUTTON_FLIP,
+        ID_TEXT_CONTROL_FILENAME
     };
 
     Properties(wxWindow* parent,
@@ -31,13 +32,15 @@ private:
 
     bool m_FileNameUpdated;
 
-
     // Flip
     bool m_Flip;
 
-
-    // Controls
+    // Filename control
     wxTextCtrl* m_pFilenameTextCtrl;
+
+    // Buttons 
+    wxButton *m_pSaveBtn;
+    wxButton* m_pSaveCopyAsBtn;
 
 private:
 
@@ -45,6 +48,7 @@ private:
     void OnSaveAs(wxCommandEvent& event);
     void OnSaveCurrent(wxCommandEvent& event);
     void OnFlipChanged(wxCommandEvent& event);
+    void OnFilenameChanged(wxCommandEvent& event);
 
     wxDECLARE_EVENT_TABLE();
 };

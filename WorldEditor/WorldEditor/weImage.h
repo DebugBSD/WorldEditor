@@ -26,6 +26,7 @@ public:
 
 	void read();
 	void save();
+	void saveAs(const std::string& filename);
 
 	wxString getFileName() { return m_Filename; }
 

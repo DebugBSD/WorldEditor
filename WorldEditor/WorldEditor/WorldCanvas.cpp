@@ -95,6 +95,14 @@ void WorldCanvas::SaveImage()
 	}
 }
 
+void WorldCanvas::SaveImageAs(const wxString& pathToTexture)
+{
+	if (m_pWEImage != NULL)
+	{
+		m_pWEImage->saveAs(pathToTexture.ToStdString());
+	}
+}
+
 void WorldCanvas::ShaveImage(size_t width, size_t height)
 {
 	delete m_pImage;
@@ -336,6 +344,11 @@ void wxWorldCanvasNotebook::OnClosedTab(wxAuiNotebookEvent& event)
 	{
 		m_pCurrentCanvas->Destroy();
 		m_pCurrentCanvas = nullptr;
+	}
+
+	if (GetPageCount() == 0)
+	{
+		m_pMainFrame->DisableViews();
 	}
 }
 

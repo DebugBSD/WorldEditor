@@ -21,6 +21,7 @@ public:
 
     wxSize ImageSize();
     void SaveImage();
+    void SaveImageAs(const wxString& pathToTexture);
     void ShaveImage(size_t width, size_t height);
     void CropImage(double x, double y, double width, double height);
     void ScaleImage(double x, double y);
