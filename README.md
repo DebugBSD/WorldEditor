@@ -2,7 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Add a Scene Window where to put all layers.
 - Add a Log window and handle errors reported by ImageMagick Framework (wxLog).
 	- See ImageMagick errors: https://imagemagick.org/script/exception.php and https://imagemagick.org/api/exception.php
 - Make Flip (Horizontal and vertical)

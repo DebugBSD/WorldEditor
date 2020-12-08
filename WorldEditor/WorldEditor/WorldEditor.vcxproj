@@ -185,6 +185,7 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="NewImageDlg.h" />
     <ClInclude Include="Properties.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestWxWidgets.h" />
@@ -204,6 +205,7 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="NewImageDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="weImage.cpp" />
     <ClCompile Include="WorldCanvas.cpp" />
     <ClCompile Include="wxSFMLCanvas.cpp" />

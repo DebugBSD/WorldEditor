@@ -69,6 +69,9 @@
     <ClInclude Include="ImageToolCompositePage.h">
       <Filter>Archivos de encabezado\ImageTools</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="ImageToolCompositePage.cpp">
       <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

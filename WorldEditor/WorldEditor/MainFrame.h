@@ -109,6 +109,8 @@ private:
     class ImageToolCompositePage* m_pImageToolComposite;
     class ImageToolShavePage* m_pImageToolShave;
 
+    class SceneManager* m_pSceneManager;
+
     void SelectedFile(wxTreeEvent &e);
     void OnExit(wxCommandEvent& evt);
     void OnZoomIn(wxCommandEvent& evt);

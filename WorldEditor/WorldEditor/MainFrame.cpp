@@ -8,6 +8,7 @@
 #include "ImageToolTrimPage.h"
 #include "ImageToolCompositePage.h"
 #include "ImageToolShavePage.h"
+#include "SceneManager.h"
 #include "SFML/Graphics.hpp"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -25,7 +26,8 @@ MainFrame::MainFrame():
 	m_pProperties{nullptr},
 	m_pDirCtrl{nullptr},
 	m_pExceptionInfo{nullptr},
-	m_pImageToolResize{nullptr}
+	m_pImageToolResize{nullptr},
+	m_pSceneManager{nullptr}
 {
 	m_pExceptionInfo = AcquireExceptionInfo();
 
@@ -80,6 +82,10 @@ MainFrame::MainFrame():
 
 	m_pImageToolShave = new ImageToolShavePage(this);
 	m_mgr.AddPane(m_pImageToolShave, wxAuiPaneInfo().Name("Shave").Caption("Shave").Fixed().
+		Right());
+
+	m_pSceneManager = new SceneManager(this);
+	m_mgr.AddPane(m_pSceneManager, wxAuiPaneInfo().Name("Scene Manager").Caption("Scene Manager").
 		Right());
 
 	// Disable views so user can't interact with them when there is no texture
