@@ -9,6 +9,7 @@
 #include "ImageToolCompositePage.h"
 #include "ImageToolShavePage.h"
 #include "SceneManager.h"
+#include "Logger.h"
 #include "SFML/Graphics.hpp"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -88,10 +89,16 @@ MainFrame::MainFrame():
 	m_mgr.AddPane(m_pSceneManager, wxAuiPaneInfo().Name("Scene Manager").Caption("Scene Manager").
 		Right());
 
+	m_pLogger = new Logger(this);
+	m_mgr.AddPane(m_pLogger, wxAuiPaneInfo().Name("Logger").Caption("Logger").
+		Bottom());
+
 	// Disable views so user can't interact with them when there is no texture
 	DisableViews();
 
 	m_mgr.Update();
+
+	wxLogWarning("Epa!");
 }
 
 MainFrame::MainFrame(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style):

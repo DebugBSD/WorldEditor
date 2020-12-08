@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <wx/app.h>
 #include "Properties.h"
 #include "MainFrame.h"
 

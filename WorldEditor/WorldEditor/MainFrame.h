@@ -110,6 +110,7 @@ private:
     class ImageToolShavePage* m_pImageToolShave;
 
     class SceneManager* m_pSceneManager;
+    class Logger* m_pLogger;
 
     void SelectedFile(wxTreeEvent &e);
     void OnExit(wxCommandEvent& evt);

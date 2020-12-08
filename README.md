@@ -2,8 +2,7 @@
 World Editor for Caronte Engine
 
 # TODO
-- Add a Log window and handle errors reported by ImageMagick Framework (wxLog).
-	- See ImageMagick errors: https://imagemagick.org/script/exception.php and https://imagemagick.org/api/exception.php
+- Handle errors (File Not Found, information about the file, errors when modifying the images, ...)
 - Make Flip (Horizontal and vertical)
 - Add the possibility to handle and create texture atlas as well as split texture atlas.
 	- See: https://imagemagick.org/api/magick-image.php#MagickMontageImage
