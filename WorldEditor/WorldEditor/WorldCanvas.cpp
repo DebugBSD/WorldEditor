@@ -208,12 +208,22 @@ void WorldCanvas::CompositeImage(const std::vector<TCompositeImage>& images)
 	m_ClearBackground = true;
 }
 
+void WorldCanvas::FlipImage(void)
+{
+	delete m_pImage;
+	m_pWEImage->flip();
+	m_pWEImage->update();
+
+	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	UpdateBitmap();
+	m_ClearBackground = true;
+}
+
 void WorldCanvas::UpdateBitmap()
 {
 	int neww, newh;
 	GetClientSize(&neww, &newh);
 
-	
 	if (m_pImage->GetWidth() > neww || m_pImage->GetHeight() > newh)
 	{
 		int vScrollPos = GetScrollPos(wxVERTICAL);
@@ -235,14 +245,21 @@ void WorldCanvas::UpdateView()
 {
 	int neww, newh;
 	GetClientSize(&neww, &newh);
+	if (m_pImage->GetWidth() > neww || m_pImage->GetHeight() > newh)
+	{
+		int vScrollPos = GetScrollPos(wxVERTICAL);
+		int hScrollPos = GetScrollPos(wxHORIZONTAL);
 
-	int vScrollPos = GetScrollPos(wxVERTICAL);
-	int hScrollPos = GetScrollPos(wxHORIZONTAL);
+		m_Bitmap = wxBitmap(m_pImage->GetSubImage(wxRect{ hScrollPos, vScrollPos, neww, newh }));
+		m_DrawPositionX = m_DrawPositionY = 0;
 
-	m_Bitmap = wxBitmap(m_pImage->GetSubImage(wxRect{ hScrollPos, vScrollPos, neww, newh }));
-	m_DrawPositionX = m_DrawPositionY = 0;
-
-	int stop = 1;
+	}
+	else
+	{
+		m_Bitmap = wxBitmap(*m_pImage);
+		m_DrawPositionX = neww / 2 - (m_pImage->GetWidth() / 2);
+		m_DrawPositionY = neww / 2 - (m_pImage->GetHeight() / 2);
+	}
 }
 
 bool WorldCanvas::init()

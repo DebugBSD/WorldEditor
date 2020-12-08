@@ -28,6 +28,7 @@ World Editor for Caronte Engine
 
 # NOTE
 - Zoom in/out is dangerous because when zooming too much, we lost the image. We should find another way to zoom in/out the image without losing the image.
+- The Canvas shows strange pixelswhen scrolling huge images. It's like transparent channel (or alpha channel) is not working propertly. See why!
 
 # ImageMagick Framework (MagickWand)
 - ImageMagick Main page: https://imagemagick.org/

@@ -8,6 +8,10 @@
 
 #include "weImage.h"
 
+/* 
+ * This class is based on: https://wiki.wxwidgets.org/Scrolling
+ */
+
 class WorldCanvas :
     public wxScrolledCanvas
 {
@@ -29,6 +33,7 @@ public:
     void ResizeImage(size_t width, size_t height);
     void TrimImage(double fuzz);
     void CompositeImage(const std::vector<TCompositeImage> &images);
+    void FlipImage(void);
 
     bool init();
     void free();

@@ -8,6 +8,7 @@
 #include "ImageToolTrimPage.h"
 #include "ImageToolCompositePage.h"
 #include "ImageToolShavePage.h"
+#include "ImageToolFlipPage.h"
 #include "SceneManager.h"
 #include "Logger.h"
 #include "SFML/Graphics.hpp"
@@ -28,7 +29,8 @@ MainFrame::MainFrame():
 	m_pDirCtrl{nullptr},
 	m_pExceptionInfo{nullptr},
 	m_pImageToolResize{nullptr},
-	m_pSceneManager{nullptr}
+	m_pSceneManager{nullptr},
+	m_pImageToolFlip{nullptr}
 {
 	m_pExceptionInfo = AcquireExceptionInfo();
 
@@ -83,6 +85,10 @@ MainFrame::MainFrame():
 
 	m_pImageToolShave = new ImageToolShavePage(this);
 	m_mgr.AddPane(m_pImageToolShave, wxAuiPaneInfo().Name("Shave").Caption("Shave").Fixed().
+		Right());
+
+	m_pImageToolFlip = new ImageToolFlipPage(this);
+	m_mgr.AddPane(m_pImageToolFlip, wxAuiPaneInfo().Name("Flip").Caption("Flip").Fixed().
 		Right());
 
 	m_pSceneManager = new SceneManager(this);

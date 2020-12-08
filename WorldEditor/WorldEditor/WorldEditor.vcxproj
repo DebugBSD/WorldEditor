@@ -177,6 +177,7 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
   <ItemGroup>
     <ClInclude Include="ImageToolCompositePage.h" />
     <ClInclude Include="ImageToolCropPage.h" />
+    <ClInclude Include="ImageToolFlipPage.h" />
     <ClInclude Include="ImageToolResizePage.h" />
     <ClInclude Include="ImageToolRotatePage.h" />
     <ClInclude Include="ImageToolScalePage.h" />
@@ -197,6 +198,7 @@ xcopy "$(SFMLSDK_RELEASE)\bin\sfml-window-2.dll" "$(OutDir)" /Y /A</Command>
   <ItemGroup>
     <ClCompile Include="ImageToolCompositePage.cpp" />
     <ClCompile Include="ImageToolCropPage.cpp" />
+    <ClCompile Include="ImageToolFlipPage.cpp" />
     <ClCompile Include="ImageToolResizePage.cpp" />
     <ClCompile Include="ImageToolRotatePage.cpp" />
     <ClCompile Include="ImageToolScalePage.cpp" />

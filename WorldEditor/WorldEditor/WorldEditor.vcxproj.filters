@@ -75,6 +75,9 @@
     <ClInclude Include="Logger.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="ImageToolFlipPage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolFlipPage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

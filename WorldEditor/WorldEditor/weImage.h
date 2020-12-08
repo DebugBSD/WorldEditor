@@ -42,6 +42,7 @@ public:
 	void rotate(double degrees);
 	void trim(double fuzz);
 	void composite(const std::vector<TCompositeImage>&images);
+	void flip();
 
 private:
 

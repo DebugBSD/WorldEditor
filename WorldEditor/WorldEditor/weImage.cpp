@@ -234,6 +234,13 @@ void weImage::composite(const std::vector<TCompositeImage>& images)
     }
 }
 
+void weImage::flip()
+{
+    m_ImageModified = true;
+
+    MagickBooleanType status = MagickFlipImage(m_pMagickWand);
+}
+
 void weImage::readPixelsFromImage()
 {
     PixelWand *color;

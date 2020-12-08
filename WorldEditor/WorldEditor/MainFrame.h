@@ -109,6 +109,7 @@ private:
     class ImageToolTrimPage* m_pImageToolTrim;
     class ImageToolCompositePage* m_pImageToolComposite;
     class ImageToolShavePage* m_pImageToolShave;
+    class ImageToolFlipPage* m_pImageToolFlip;
 
     class SceneManager* m_pSceneManager;
     class Logger* m_pLogger;
