@@ -19,7 +19,9 @@ public:
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
         long style = 128);
+
 private:
+    class MainFrame* m_pMainFrame;
 
     // Composite Controls
     class wxTextCtrl* m_pCompositeFilename0TextCtrl;

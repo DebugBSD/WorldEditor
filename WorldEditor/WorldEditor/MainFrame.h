@@ -84,6 +84,8 @@ public:
 
     ExceptionInfo* GetExceptionInfoPtr() { return m_pExceptionInfo; }
 
+    void UpdateView();
+
 private:
     ExceptionInfo* m_pExceptionInfo;
 

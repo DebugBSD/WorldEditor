@@ -15,6 +15,7 @@ public:
         long style = 128);
 
 private:
+    class MainFrame* m_pMainFrame;
 
     // Scale 
     float m_ScaleWidth;

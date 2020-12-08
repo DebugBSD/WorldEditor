@@ -16,6 +16,7 @@ public:
         long style = 128);
 
 private:
+    class MainFrame* m_pMainFrame;
     // Shave
     unsigned int m_ShaveWidth;
     unsigned int m_ShaveHeight;

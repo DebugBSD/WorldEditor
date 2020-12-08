@@ -48,6 +48,11 @@ MainFrame::MainFrame():
 	m_mgr.AddPane(m_pWorldCanvasNotebook, wxAuiPaneInfo().Name("WorldCanvasNotebook").
 		CenterPane().PaneBorder(false));
 
+	// Properties window
+	m_pProperties = new Properties(this);
+	m_mgr.AddPane(m_pProperties, wxAuiPaneInfo().Name("Properties").Caption("Properties").Fixed().
+		Right());
+
 	// Image tool resize
 	m_pImageToolResize = new ImageToolResizePage(this);
 	m_mgr.AddPane(m_pImageToolResize, wxAuiPaneInfo().Name("Resize").Caption("Resize").Fixed().
@@ -75,11 +80,6 @@ MainFrame::MainFrame():
 
 	m_pImageToolShave = new ImageToolShavePage(this);
 	m_mgr.AddPane(m_pImageToolShave, wxAuiPaneInfo().Name("Shave").Caption("Shave").Fixed().
-		Right());
-
-	// Properties window
-	m_pProperties = new Properties(this, wxID_ANY, wxDefaultPosition, wxSize{ 500, 500 });
-	m_mgr.AddPane(m_pProperties, wxAuiPaneInfo().Name("Properties").Caption("Properties").
 		Right());
 
 	m_mgr.Update();
@@ -125,6 +125,11 @@ void MainFrame::OnNewTexture(wxCommandEvent& event)
 void MainFrame::OnSize(wxSizeEvent& event)
 {
 	Refresh();
+}
+
+void MainFrame::UpdateView()
+{
+	m_pImageToolResize->UpdateView();
 }
 
 wxMenuBar* MainFrame::CreateMenuBar()

@@ -14,8 +14,10 @@ public:
         const wxSize& size = wxDefaultSize,
         long style = 128);
 
-private:
+    void UpdateView();
 
+private:
+    class MainFrame* m_pMainFrame;
     // Size properties
     unsigned int m_Width;
     unsigned int m_Height;

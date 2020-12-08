@@ -15,7 +15,9 @@ public:
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
         long style = 128);
+
 private:
+    class MainFrame* m_pMainFrame;
 
     class wxTextCtrl* m_pRotationTextCtrl;
 

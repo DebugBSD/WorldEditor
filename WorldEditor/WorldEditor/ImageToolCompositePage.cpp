@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolCompositePage.h"
 #include "weImage.h"
 
@@ -17,7 +18,8 @@ EVT_BUTTON(ID_BUTTON_COMPOSITE_FIND_TEXTURE3, ImageToolCompositePage::OnFindText
 wxEND_EVENT_TABLE()
 
 ImageToolCompositePage::ImageToolCompositePage(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style):
-    wxPanel(parent, id, pos, size, style)
+    wxPanel(parent, id, pos, size, style),
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
 
     wxBoxSizer* pBoxSizer = new wxBoxSizer(wxVERTICAL);
@@ -120,9 +122,9 @@ void ImageToolCompositePage::OnCompositeChanged(wxCommandEvent& event)
     tempTexture.m_Point.y = wxAtoi(m_pCompisteY3TextCtrl->GetValue());
     textures[3] = tempTexture;
 
-    //m_pMainFrame->GetWorldCanvas()->CompositeImage(textures);
+    m_pMainFrame->GetWorldCanvas()->CompositeImage(textures);
 
-    //UpdateView();
+    m_pMainFrame->UpdateView();
 }
 
 

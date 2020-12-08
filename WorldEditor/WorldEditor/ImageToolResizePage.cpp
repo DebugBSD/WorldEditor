@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolResizePage.h"
 
 #include <wx/sizer.h>
@@ -16,7 +17,8 @@ ImageToolResizePage::ImageToolResizePage(wxWindow* parent,
     const wxPoint& pos,
     const wxSize& size,
     long style) :
-	wxPanel(parent, id, pos, size, style)
+	wxPanel(parent, id, pos, size, style),
+    m_pMainFrame {static_cast<MainFrame*>(wxTheApp->GetTopWindow())}
 {
 
     wxIntegerValidator<unsigned int>
@@ -64,6 +66,13 @@ ImageToolResizePage::ImageToolResizePage(wxWindow* parent,
     SetSizerAndFit(imageSizeSizer);
 }
 
+void ImageToolResizePage::UpdateView()
+{
+    wxSize size = m_pMainFrame->GetWorldCanvas()->ImageSize();
+    m_pSizeWidthTextCtrl->SetValue(wxString::FromDouble(size.x));
+    m_pSizeHeightTextCtrl->SetValue(wxString::FromDouble(size.y));
+}
+
 void ImageToolResizePage::OnSizeChanged(wxCommandEvent& event)
 {
     wxString strWidth = m_pSizeWidthTextCtrl->GetValue();
@@ -71,7 +80,5 @@ void ImageToolResizePage::OnSizeChanged(wxCommandEvent& event)
     m_Width = wxAtoi(strWidth);
     m_Height = wxAtoi(strHeight);
 
-    /*m_pMainFrame->GetWorldCanvas()->ResizeImage(m_Width, m_Height);
-
-    UpdateView();*/
+    m_pMainFrame->GetWorldCanvas()->ResizeImage(m_Width, m_Height);
 }

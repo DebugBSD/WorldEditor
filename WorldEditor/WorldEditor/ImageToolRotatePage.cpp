@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolRotatePage.h"
 
 #include <wx/sizer.h>
@@ -12,7 +13,8 @@ EVT_BUTTON(ID_BUTTON_ROTATE, ImageToolRotatePage::OnRotationChanged)
 wxEND_EVENT_TABLE()
 
 ImageToolRotatePage::ImageToolRotatePage(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
-    wxPanel(parent, id, pos, size, style)
+    wxPanel(parent, id, pos, size, style),
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
 
     wxFloatingPointValidator<float>
@@ -37,7 +39,7 @@ ImageToolRotatePage::ImageToolRotatePage(wxWindow* parent, wxWindowID id, const 
     rotateImageSizer->Add(
         new wxButton(this, ID_BUTTON_ROTATE, "Rotate"),
         0,                          // make horizontally unstretchable
-        wxALL,              //   and align the button to the right
+        wxALL,                      //   and align the button to the right
         2);                         // set border width to 1
 
     SetSizerAndFit(rotateImageSizer);
@@ -52,7 +54,7 @@ void ImageToolRotatePage::OnRotationChanged(wxCommandEvent& event)
 
     m_Angle = (float)value;
 
-    //m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
+    m_pMainFrame->GetWorldCanvas()->RotateImage(m_Angle);
 
-    //UpdateView();
+    m_pMainFrame->UpdateView();
 }

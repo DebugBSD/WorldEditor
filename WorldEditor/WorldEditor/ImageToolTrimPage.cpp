@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolTrimPage.h"
 
 #include <wx/sizer.h>
@@ -12,7 +13,8 @@ wxBEGIN_EVENT_TABLE(ImageToolTrimPage, wxPanel)
 wxEND_EVENT_TABLE()
 
 ImageToolTrimPage::ImageToolTrimPage(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
-    wxPanel(parent, id, pos, size, style)
+    wxPanel(parent, id, pos, size, style),
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
     wxBoxSizer* trimImageSizer = new wxBoxSizer(wxHORIZONTAL);
     trimImageSizer->Add(
@@ -44,7 +46,7 @@ void ImageToolTrimPage::OnTrimChanged(wxCommandEvent& event)
     double value;
     strFuzz.ToDouble(&value);
 
-    //m_pMainFrame->GetWorldCanvas()->TrimImage(value);
+    m_pMainFrame->GetWorldCanvas()->TrimImage(value);
 
-    //UpdateView();
+    m_pMainFrame->UpdateView();
 }

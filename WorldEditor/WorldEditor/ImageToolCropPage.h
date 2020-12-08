@@ -18,6 +18,8 @@ public:
 
 
 private:
+    class MainFrame* m_pMainFrame;
+
     // Crop
     unsigned int m_CropX;
     unsigned int m_CropY;

@@ -53,22 +53,17 @@ void Properties::SetFileName(const wxString& fileName)
 
 void Properties::UpdateView()
 {
-    wxSize size = m_pMainFrame->GetWorldCanvas()->ImageSize();
 
     m_pFilenameTextCtrl->SetValue(m_FileName);
 
-    //m_pSizeWidthTextCtrl->SetValue(wxString::FromDouble(size.x));
-    //m_pSizeHeightTextCtrl->SetValue(wxString::FromDouble(size.y));
+    m_pMainFrame->UpdateView();
+
 }
 
 
 void Properties::OnSaveAs(wxCommandEvent& event)
 {
-    /* 
-     * Verificaciones:
-     * - El nombre del fichero debe ser igual que el de la caja de texto.
-     * - El fichero actual haya sido modificado.
-     */
+
 }
 
 void Properties::OnSaveCurrent(wxCommandEvent& event)

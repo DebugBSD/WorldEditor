@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolShavePage.h"
 
 #include <wx/sizer.h>
@@ -13,7 +14,8 @@ wxEND_EVENT_TABLE()
 
 
 ImageToolShavePage::ImageToolShavePage(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
-	wxPanel(parent, id, pos, size, style)
+	wxPanel(parent, id, pos, size, style),
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
     wxIntegerValidator<unsigned int>
         shaveWidthval(&m_ShaveWidth, wxNUM_VAL_THOUSANDS_SEPARATOR);
@@ -68,7 +70,7 @@ void ImageToolShavePage::OnShaveChanged(wxCommandEvent& event)
     m_ShaveWidth = wxAtoi(strWidth);
     m_ShaveHeight = wxAtoi(strHeight);
 
-    //m_pMainFrame->GetWorldCanvas()->ShaveImage(m_ShaveWidth, m_ShaveHeight);
+    m_pMainFrame->GetWorldCanvas()->ShaveImage(m_ShaveWidth, m_ShaveHeight);
 
-    //UpdateView();
+    m_pMainFrame->UpdateView();
 }

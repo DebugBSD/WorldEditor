@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolCropPage.h"
 
 #include <wx/sizer.h>
@@ -12,7 +13,8 @@ EVT_BUTTON(ID_BUTTON_CROP, ImageToolCropPage::OnCropChanged)
 wxEND_EVENT_TABLE()
 
 ImageToolCropPage::ImageToolCropPage(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
-    wxPanel(parent, id, pos, size, style)
+    wxPanel(parent, id, pos, size, style),
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
 
     wxIntegerValidator<unsigned int>
@@ -113,7 +115,7 @@ void ImageToolCropPage::OnCropChanged(wxCommandEvent& event)
     m_CropWidth = wxAtoi(strWidth);
     m_CropHeight = wxAtoi(strHeight);
 
-    //m_pMainFrame->GetWorldCanvas()->CropImage(m_CropX, m_CropY, m_CropWidth, m_CropHeight);
+    m_pMainFrame->GetWorldCanvas()->CropImage(m_CropX, m_CropY, m_CropWidth, m_CropHeight);
 
-    //UpdateView();
+    m_pMainFrame->UpdateView();
 }

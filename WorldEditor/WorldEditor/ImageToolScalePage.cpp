@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MainFrame.h"
 #include "ImageToolScalePage.h"
 
 #include <wx/sizer.h>
@@ -16,7 +17,8 @@ ImageToolScalePage::ImageToolScalePage(wxWindow* parent,
     const wxPoint& pos,
     const wxSize& size,
     long style):
-    wxPanel(parent, id, pos, size, style)
+    wxPanel(parent, id, pos, size, style),
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
 {
 
     wxFloatingPointValidator<float>
@@ -74,7 +76,7 @@ void ImageToolScalePage::OnScaleChanged(wxCommandEvent& event)
     strY.ToDouble(&value);
     m_ScaleHeight = (float)value;
 
-    //m_pMainFrame->GetWorldCanvas()->ScaleImage(m_ScaleWidth, m_ScaleHeight);
+    m_pMainFrame->GetWorldCanvas()->ScaleImage(m_ScaleWidth, m_ScaleHeight);
 
-    //UpdateView();
+    m_pMainFrame->UpdateView();
 }

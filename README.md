@@ -3,7 +3,6 @@ World Editor for Caronte Engine
 
 # TODO
 - Implement the button: "Save Copy As"
-- Create different subwindows for every Operator (Scale, Resize, Crop, ...) instead of using just a single window.
 - Add a Scene Window where to put all layers.
 - Add a Log window and handle errors reported by ImageMagick Framework (wxLog).
 	- See ImageMagick errors: https://imagemagick.org/script/exception.php and https://imagemagick.org/api/exception.php
