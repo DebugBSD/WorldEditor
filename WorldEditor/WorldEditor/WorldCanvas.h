@@ -47,6 +47,7 @@ private:
 private:
 
     void UpdateBitmap();
+    void UpdateView();
 
     void OnIdle(wxIdleEvent &event);
     void paintEvent(wxPaintEvent &event);
@@ -64,6 +65,8 @@ private:
      void keyPressed(wxKeyEvent& event);
      void keyReleased(wxKeyEvent& event);
      */
+    void OnThumbTrack(wxScrollWinEvent& event);
+    void OnThumbRelease(wxScrollWinEvent& event);
 
     wxDECLARE_EVENT_TABLE();
 };

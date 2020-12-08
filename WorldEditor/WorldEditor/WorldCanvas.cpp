@@ -213,10 +213,15 @@ void WorldCanvas::UpdateBitmap()
 	int neww, newh;
 	GetClientSize(&neww, &newh);
 
+	
 	if (m_pImage->GetWidth() > neww || m_pImage->GetHeight() > newh)
 	{
-		m_Bitmap = wxBitmap(m_pImage->Scale(neww, newh));
+		int vScrollPos = GetScrollPos(wxVERTICAL);
+		int hScrollPos = GetScrollPos(wxHORIZONTAL);
+
+		m_Bitmap = wxBitmap(m_pImage->GetSubImage(wxRect{ hScrollPos, vScrollPos, neww, newh }));
 		m_DrawPositionX = m_DrawPositionY = 0;
+
 	}
 	else
 	{
@@ -224,6 +229,20 @@ void WorldCanvas::UpdateBitmap()
 		m_DrawPositionX = neww / 2 - (m_pImage->GetWidth() / 2);
 		m_DrawPositionY = neww / 2 - (m_pImage->GetHeight() / 2);
 	}
+}
+
+void WorldCanvas::UpdateView()
+{
+	int neww, newh;
+	GetClientSize(&neww, &newh);
+
+	int vScrollPos = GetScrollPos(wxVERTICAL);
+	int hScrollPos = GetScrollPos(wxHORIZONTAL);
+
+	m_Bitmap = wxBitmap(m_pImage->GetSubImage(wxRect{ hScrollPos, vScrollPos, neww, newh }));
+	m_DrawPositionX = m_DrawPositionY = 0;
+
+	int stop = 1;
 }
 
 bool WorldCanvas::init()
@@ -296,6 +315,8 @@ void WorldCanvas::render(wxDC& dc)
 		dc.Clear();
 		m_ClearBackground = false;
 	}
+
+	UpdateView();
 
 	dc.DrawBitmap(m_Bitmap, m_DrawPositionX, m_DrawPositionY, true);
 
