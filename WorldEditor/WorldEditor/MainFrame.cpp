@@ -80,7 +80,7 @@ MainFrame::MainFrame():
 		Right());
 
 	m_pImageToolComposite = new ImageToolCompositePage(this);
-	m_mgr.AddPane(m_pImageToolComposite, wxAuiPaneInfo().Name("Composite").Caption("Composite").Fixed().
+	m_mgr.AddPane(m_pImageToolComposite, wxAuiPaneInfo().Name("Composite").Caption("Composite").
 		Right());
 
 	m_pImageToolShave = new ImageToolShavePage(this);
@@ -97,7 +97,7 @@ MainFrame::MainFrame():
 
 	m_pLogger = new Logger(this);
 	m_mgr.AddPane(m_pLogger, wxAuiPaneInfo().Name("Logger").Caption("Logger").MinSize(-1,200).
-		Bottom());
+		Left());
 
 	// Disable views so user can't interact with them when there is no texture
 	DisableViews();

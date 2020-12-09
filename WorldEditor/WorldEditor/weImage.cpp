@@ -35,22 +35,24 @@ bool weImage::init(const wxSize& size, bool transparent)
         m_pMagickWand = NULL;
     }
 
-    m_pMagickWand = NewMagickWand();
-
-
     color = NewPixelWand();
-    if (transparent == true)
-    {
+    if(transparent)
         PixelSetColor(color, "transparent");
-        MagickNewImage(m_pMagickWand, size.x, size.y, color);
-        MagickReadImage(pPattern, "pattern:checkerboard");
-        m_pMagickWand = MagickTextureImage(m_pMagickWand, pPattern);
-    }
     else
-    {
         PixelSetColor(color, "black");
-        MagickNewImage(m_pMagickWand, size.x, size.y, color);
-    }
+
+    m_pMagickWand = NewMagickWand();
+    MagickSetColorspace(m_pMagickWand, sRGBColorspace);
+    MagickSetDepth(m_pMagickWand, 32);
+    MagickSetType(m_pMagickWand, TrueColorAlphaType);
+    MagickSetBackgroundColor(m_pMagickWand, color);
+
+    MagickNewImage(m_pMagickWand, size.x, size.y, color); 
+    MagickSetImageDepth(m_pMagickWand, 8);
+    MagickSetImageColorspace(m_pMagickWand, sRGBColorspace);
+    MagickSetImageType(m_pMagickWand, TrueColorAlphaType);
+    MagickSetImageUnits(m_pMagickWand, PixelsPerCentimeterResolution);
+
 
     char* pInfo = MagickIdentifyImage(m_pMagickWand);
     wxLogWarning(pInfo);

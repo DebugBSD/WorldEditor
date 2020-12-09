@@ -1,17 +1,35 @@
 #pragma once
-#include <wx/panel.h>
+#include <wx/wx.h>
+#include <vector>
+
+class CompositePanel : public wxPanel
+{
+public:
+    enum
+    {
+        ID_BUTTON_COMPOSITE_FIND_TEXTURE = wxID_HIGHEST + 1
+    };
+
+    CompositePanel(wxWindow* parent, wxWindowID id);
+
+    class wxTextCtrl* m_pCompositeFilenameTextCtrl;
+    class wxTextCtrl* m_pCompisteXTextCtrl;
+    class wxTextCtrl* m_pCompisteYTextCtrl;
+
+private:
+
+    void OnFindTexture(wxCommandEvent& event);
+    wxDECLARE_EVENT_TABLE();
+};
 
 class ImageToolCompositePage :
-    public wxPanel
+    public wxScrolledWindow
 {
 public:
     enum
     {
         ID_BUTTON_COMPOSITE = wxID_HIGHEST + 1,
-        ID_BUTTON_COMPOSITE_FIND_TEXTURE0,
-        ID_BUTTON_COMPOSITE_FIND_TEXTURE1,
-        ID_BUTTON_COMPOSITE_FIND_TEXTURE2,
-        ID_BUTTON_COMPOSITE_FIND_TEXTURE3
+        ID_BUTTON_ADD_NEW_IMAGE
     };
 
     ImageToolCompositePage(wxWindow* parent,
@@ -22,26 +40,12 @@ public:
 
 private:
     class MainFrame* m_pMainFrame;
+    class wxBoxSizer* m_pBoxSizer;
 
-    // Composite Controls
-    class wxTextCtrl* m_pCompositeFilename0TextCtrl;
-    class wxTextCtrl* m_pCompositeFilename1TextCtrl;
-    class wxTextCtrl* m_pCompositeFilename2TextCtrl;
-    class wxTextCtrl* m_pCompositeFilename3TextCtrl;
-    class wxTextCtrl* m_pCompisteX0TextCtrl;
-    class wxTextCtrl* m_pCompisteY0TextCtrl;
-    class wxTextCtrl* m_pCompisteX1TextCtrl;
-    class wxTextCtrl* m_pCompisteY1TextCtrl;
-    class wxTextCtrl* m_pCompisteX2TextCtrl;
-    class wxTextCtrl* m_pCompisteY2TextCtrl;
-    class wxTextCtrl* m_pCompisteX3TextCtrl;
-    class wxTextCtrl* m_pCompisteY3TextCtrl;
+    std::vector<CompositePanel*> m_Images;
 
     void OnCompositeChanged(wxCommandEvent& event);
-    void OnFindTexture0(wxCommandEvent& event);
-    void OnFindTexture1(wxCommandEvent& event);
-    void OnFindTexture2(wxCommandEvent& event);
-    void OnFindTexture3(wxCommandEvent& event);
+    void OnNewPanelBtn(wxCommandEvent& event);
     wxDECLARE_EVENT_TABLE();
 
 };

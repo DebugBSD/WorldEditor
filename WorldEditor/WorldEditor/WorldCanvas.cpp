@@ -226,6 +226,9 @@ void WorldCanvas::UpdateBitmap()
 
 	if (m_pImage->GetWidth() > neww || m_pImage->GetHeight() > newh)
 	{
+		neww = (m_pImage->GetWidth() > neww) ? neww : m_pImage->GetWidth();
+		newh = (m_pImage->GetHeight() > newh) ? newh : m_pImage->GetHeight();
+
 		int vScrollPos = GetScrollPos(wxVERTICAL);
 		int hScrollPos = GetScrollPos(wxHORIZONTAL);
 
@@ -247,6 +250,9 @@ void WorldCanvas::UpdateView()
 	GetClientSize(&neww, &newh);
 	if (m_pImage->GetWidth() > neww || m_pImage->GetHeight() > newh)
 	{
+		neww = (m_pImage->GetWidth() > neww) ? neww : m_pImage->GetWidth();
+		newh = (m_pImage->GetHeight() > newh) ? newh : m_pImage->GetHeight();
+
 		int vScrollPos = GetScrollPos(wxVERTICAL);
 		int hScrollPos = GetScrollPos(wxHORIZONTAL);
 

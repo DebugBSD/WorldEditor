@@ -2,7 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Make Flip (Horizontal and vertical)
 - Add the possibility to handle and create texture atlas as well as split texture atlas.
 	- See: https://imagemagick.org/api/magick-image.php#MagickMontageImage
 - Detect changes in the image and ask for save before quit the program or close the application.
