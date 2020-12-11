@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "icons/icon.xpm"
 #include "MainFrame.h"
 #include "NewImageDlg.h"
 #include "ImageToolResizePage.h"
@@ -38,7 +39,7 @@ MainFrame::MainFrame():
 	m_mgr.SetManagedWindow(this);
 
 	// set frame icon
-	//SetIcon(wxIcon(sample_xpm));
+	SetIcon(wxIcon(icon_xpm));
 	
 	SetMenuBar(CreateMenuBar());
 

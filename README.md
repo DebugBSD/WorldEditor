@@ -7,7 +7,7 @@ World Editor for Caronte Engine
 - Add a drawing tool to draw into the texture.
 - Add a paint tool to paint the level using textures. (See: MagickImportImagePixels or MagickCompositeImage/MagickCompositeLayers)
 - Add a grid over the image (and add the possibility to configure as orthogonal, isometric, hexagonal, rectangular...)
-- Export the texture to the game engine (as binary).
+- Export the texture to the game engine (as binary) or XPM which is C code.
 - Use OpenGL as Graphics API instead of wxImage/wxBitmap.
 - Beware to deal with different kind of images (RGB, RGBA, CYMK, CYMKA, ...)
 - Add a reset button to reset (or reload) the image to the default.
@@ -17,7 +17,6 @@ World Editor for Caronte Engine
 - Add a ruler on the image.
 - Create a custom Directory control where to show all files (Change the wxGenericDirCtrl by a custom control). Images must be shown as thumbnails.
 - Add support to Undo/Redo.
-- Add icon to the main frame.
 - Particle Editor.
 - Sound.
 - Add Fade In/Out (see Blend/Disolve in ImageMagick)
