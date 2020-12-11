@@ -2,8 +2,6 @@
 World Editor for Caronte Engine
 
 # TODO
-- Add the possibility to handle and create texture atlas as well as split texture atlas.
-	- See: https://imagemagick.org/api/magick-image.php#MagickMontageImage
 - Detect changes in the image and ask for save before quit the program or close the application.
 - Add the possibility to create animations based on textures.
 - Add a drawing tool to draw into the texture.
@@ -17,13 +15,14 @@ World Editor for Caronte Engine
 - Add support to copy&paste regions of pixels.
 - Add custom filter to the finder so we can find Tiles, Decals or whatever...
 - Add a ruler on the image.
-- Create a custom Directory control where to show all files (Change the wxGenericDirCtrl by a custom control).
+- Create a custom Directory control where to show all files (Change the wxGenericDirCtrl by a custom control). Images must be shown as thumbnails.
 - Add support to Undo/Redo.
 - Add icon to the main frame.
 - Particle Editor.
 - Sound.
 - Add Fade In/Out (see Blend/Disolve in ImageMagick)
 - Think carefully about how to update all views.
+- Improve the User Interface.
 
 # NOTE
 - Zoom in/out is dangerous because when zooming too much, we lost the image. We should find another way to zoom in/out the image without losing the image.

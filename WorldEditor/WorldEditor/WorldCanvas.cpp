@@ -194,6 +194,11 @@ void WorldCanvas::TrimImage(double fuzz)
 	m_ClearBackground = true;
 }
 
+void WorldCanvas::SplitImage(const std::vector<TSplitImage>& images)
+{
+	m_pWEImage->split(images);
+}
+
 void WorldCanvas::CompositeImage(const std::vector<TCompositeImage>& images)
 {
 	delete m_pImage;

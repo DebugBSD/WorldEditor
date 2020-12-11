@@ -9,6 +9,7 @@
 #include "ImageToolCompositePage.h"
 #include "ImageToolShavePage.h"
 #include "ImageToolFlipPage.h"
+#include "ImageToolSplitPage.h"
 #include "SceneManager.h"
 #include "Logger.h"
 #include "SFML/Graphics.hpp"
@@ -81,6 +82,10 @@ MainFrame::MainFrame():
 
 	m_pImageToolComposite = new ImageToolCompositePage(this);
 	m_mgr.AddPane(m_pImageToolComposite, wxAuiPaneInfo().Name("Composite").Caption("Composite").
+		Right());
+
+	m_pImageToolSplit = new ImageToolSplitPage(this);
+	m_mgr.AddPane(m_pImageToolSplit, wxAuiPaneInfo().Name("Split").Caption("Split").
 		Right());
 
 	m_pImageToolShave = new ImageToolShavePage(this);

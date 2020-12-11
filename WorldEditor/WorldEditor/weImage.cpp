@@ -188,6 +188,35 @@ void weImage::shave(size_t width, size_t height)
     MagickShaveImage(m_pMagickWand, width, height);
 }
 
+void weImage::split(const std::vector<TSplitImage>& images)
+{
+    for (TSplitImage image : images)
+    {
+        MagickWand* pMagickWand;
+
+        // In PNG images we should call this function before doing some kind of processing 
+        // (Crop or something like that. I don't know why I have to do this, but, the thing 
+        // is that if I don't call this function, the next function doesn't works). 
+        // This is not documented on anywhere in the ImageMagick webpage, but most people 
+        // have asked about this problem in the forum. So, that's why I call this function.
+        MagickSetImagePage(m_pMagickWand, 0, 0, 0, 0);
+
+        // This function it's assumed to create a new wand and store into it the subregion.
+        pMagickWand = MagickGetImageRegion(m_pMagickWand, image.m_Rect.GetWidth(), image.m_Rect.GetHeight(), image.m_Rect.x, image.m_Rect.y);
+
+        MagickBooleanType status = MagickWriteImage(pMagickWand, image.m_File.c_str());
+
+        if (status == MagickFalse)
+        {
+            // TODO: Handle errors
+            ThrowWandException(m_pMagickWand);
+        }
+
+        // Destroy temporal wand
+        DestroyMagickWand(pMagickWand);
+    }
+}
+
 void weImage::rotate(double degrees)
 {
     m_ImageModified = true;

@@ -78,6 +78,9 @@
     <ClInclude Include="ImageToolFlipPage.h">
       <Filter>Archivos de encabezado\ImageTools</Filter>
     </ClInclude>
+    <ClInclude Include="ImageToolSplitPage.h">
+      <Filter>Archivos de encabezado\ImageTools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -129,6 +132,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="ImageToolFlipPage.cpp">
+      <Filter>Archivos de origen\ImageTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageToolSplitPage.cpp">
       <Filter>Archivos de origen\ImageTools</Filter>
     </ClCompile>
   </ItemGroup>

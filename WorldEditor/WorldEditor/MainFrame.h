@@ -19,6 +19,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/dirctrl.h>
+#include <wx/filename.h>
 
 #include "wx/aui/aui.h"
 
@@ -108,6 +109,7 @@ private:
     class ImageToolCropPage* m_pImageToolCrop;
     class ImageToolTrimPage* m_pImageToolTrim;
     class ImageToolCompositePage* m_pImageToolComposite;
+    class ImageToolSplitPage* m_pImageToolSplit;
     class ImageToolShavePage* m_pImageToolShave;
     class ImageToolFlipPage* m_pImageToolFlip;
 

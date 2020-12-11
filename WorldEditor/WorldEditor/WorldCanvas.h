@@ -32,6 +32,7 @@ public:
     void RotateImage(float degrees);
     void ResizeImage(size_t width, size_t height);
     void TrimImage(double fuzz);
+    void SplitImage(const std::vector<TSplitImage>& images);
     void CompositeImage(const std::vector<TCompositeImage> &images);
     void FlipImage(void);
 

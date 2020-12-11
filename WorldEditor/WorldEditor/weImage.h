@@ -8,6 +8,12 @@
 #include <MagickCore/MagickCore.h>
 #include <MagickWand/MagickWand.h>
 
+struct TSplitImage
+{
+	std::string m_File;
+	wxSize m_Rect;
+};
+
 struct TCompositeImage
 {
 	std::string m_File;
@@ -39,6 +45,7 @@ public:
 	void scale(double x, double y);
 	void crop(double x, double y, double width, double height);
 	void shave(size_t width, size_t height);
+	void split(const std::vector<TSplitImage>& images);
 	void rotate(double degrees);
 	void trim(double fuzz);
 	void composite(const std::vector<TCompositeImage>&images);
