@@ -18,9 +18,9 @@ World Editor for Caronte Engine
 - Create a custom Directory control where to show all files (Change the wxGenericDirCtrl by a custom control). Images must be shown as thumbnails.
 - Add support to Undo/Redo.
 - Particle Editor.
-- Sound.
+- Add Sound emitter and listener.
 - Add Fade In/Out (see Blend/Disolve in ImageMagick)
-- Think carefully about how to update all views.
+- Think carefully about how to update all views based on selected tab image.
 - Improve the User Interface.
 
 # NOTE

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <wx/wx.h>
+#include <wx/mstream.h>
 
 #include <MagickCore/MagickCore.h>
 #include <MagickWand/MagickWand.h>
@@ -51,6 +52,8 @@ public:
 	void composite(const std::vector<TCompositeImage>&images);
 	void flip();
 
+	wxMemoryInputStream* getInputStream() { return m_pInputStream; }
+
 private:
 
 	void readPixelsFromImage();
@@ -68,5 +71,8 @@ private:
 
 	// ImageMagick context
 	MagickWand* m_pMagickWand;
+
+	// Just for testing purposes
+	wxMemoryInputStream* m_pInputStream;
 };
 

@@ -52,7 +52,7 @@ void WorldCanvas::CreateTexture(const wxSize& size)
 {
 	m_pWEImage = new weImage();
 	m_pWEImage->init(size);
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	SetScrollbars(1, 1, m_pWEImage->getSize().x, m_pWEImage->getSize().y, 0, 0);
 	UpdateBitmap();
 	m_ClearBackground = true;
@@ -65,7 +65,7 @@ bool WorldCanvas::OpenTexture(const wxString& pathToTexture)
 	bool success = true;
 	m_pWEImage = new weImage();
 	m_pWEImage->init(pathToTexture.ToStdString());
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	if (success)
 	{
 
@@ -116,7 +116,7 @@ void WorldCanvas::ShaveImage(size_t width, size_t height)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -130,7 +130,7 @@ void WorldCanvas::CropImage(double x, double y, double width, double height)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -145,7 +145,7 @@ void WorldCanvas::ScaleImage(double x, double y)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -160,7 +160,7 @@ void WorldCanvas::RotateImage(float degrees)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -175,7 +175,7 @@ void WorldCanvas::ResizeImage(size_t width, size_t height)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -189,7 +189,7 @@ void WorldCanvas::TrimImage(double fuzz)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -208,7 +208,7 @@ void WorldCanvas::CompositeImage(const std::vector<TCompositeImage>& images)
 	// NOTE: Debug this algorithm. When the image is rotated the size of the used memory grows exponentially.
 	//sizes.push_back(m_pWEImage->getSize()); 
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }
@@ -219,7 +219,7 @@ void WorldCanvas::FlipImage(void)
 	m_pWEImage->flip();
 	m_pWEImage->update();
 
-	m_pImage = new wxImage(m_pWEImage->getSize().x, m_pWEImage->getSize().y, m_pWEImage->getPixels(), m_pWEImage->getAlphaPixels());
+	m_pImage = new wxImage(*(m_pWEImage->getInputStream()), wxBITMAP_TYPE_PNG);
 	UpdateBitmap();
 	m_ClearBackground = true;
 }

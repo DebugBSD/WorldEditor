@@ -8,7 +8,8 @@ weImage::weImage():
 	m_ImageModified{false},
 	m_pPixels{NULL},
     m_pAlphaPixels{NULL},
-    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }
+    m_pMainFrame{ static_cast<MainFrame*>(wxTheApp->GetTopWindow()) }, 
+    m_pInputStream{NULL}
 {
 
 }
@@ -272,12 +273,34 @@ void weImage::flip()
     MagickBooleanType status = MagickFlipImage(m_pMagickWand);
 }
 
+//
+// See here to improve the code: https://github.com/ImageMagick/ImageMagick/discussions/2967
+//
 void weImage::readPixelsFromImage()
 {
+    size_t length;
     PixelWand *color;
 
     MagickBooleanType status;
 
+    if (m_pInputStream != NULL)
+    {
+        delete m_pInputStream;
+        m_pInputStream = NULL;
+    }
+
+    MagickSetImageFormat(m_pMagickWand, "PNG");
+    MagickResetIterator(m_pMagickWand);
+    if (m_pPixels != NULL)
+    {
+        MagickRelinquishMemory(m_pPixels);
+        m_pPixels = NULL;
+    }
+
+    m_pPixels = MagickGetImageBlob(m_pMagickWand, &length);
+    m_pInputStream = new wxMemoryInputStream{ m_pPixels, length };
+
+#ifdef OLDCODE
     wxSize size = getSize();
 
     m_pPixels = (uint8_t*)malloc((size_t)size.x * (size_t)size.y * (size_t)3);
@@ -324,4 +347,5 @@ void weImage::readPixelsFromImage()
             std::free(pixels);
         }
     }
+#endif
 }
