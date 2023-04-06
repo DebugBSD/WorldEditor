@@ -34,9 +34,13 @@ bool MyApp::OnInit()
 int MyApp::OnExit()
 {
 
-    MagickCoreTerminus();
+    // Se comentan las dos siguientes llamadas a la API de ImageMagick porque cuando 
+    // se cierra el programa da una excepcion y no tengo claro todavia el por que.
+    // El caso es que me molesta para editar las texturas del nivel que estoy 
+    // haciendo asi que ya lo mirare con mas calma cuando tenga mas tiempo.
+    //MagickCoreTerminus();
 
-    MagickWandTerminus();
+    //MagickWandTerminus();
 
     return true;
 }

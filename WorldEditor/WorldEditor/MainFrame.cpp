@@ -13,7 +13,6 @@
 #include "ImageToolSplitPage.h"
 #include "SceneManager.h"
 #include "Logger.h"
-#include "SFML/Graphics.hpp"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_DIRCTRL_FILEACTIVATED(wxID_ANY, MainFrame::SelectedFile)
